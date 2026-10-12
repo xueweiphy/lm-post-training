@@ -1,0 +1,19 @@
+# Python / envs
+__pycache__/
+*.py[cod]
+.venv/
+.venv-*/
+.DS_Store
+
+# run outputs (numbers go in README)
+logs/
+results/
+inspect.txt
+wandb/
+
+# models / checkpoints
+*.bin
+*.safetensors
+!tests/fixtures/**/*.safetensors
+models/
+checkpoints/
