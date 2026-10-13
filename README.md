@@ -28,9 +28,9 @@ Same 3-shot prompt with greedy decoding, first 100 questions: 38 % accuracy, 100
 | `check_greedy.py` | greedy 3-shot sanity check on 100 questions |
 | `run_gpu.sh` | Slurm job: `sbatch run_gpu.sh <script.py> [args]` |
 | `push.sh`, `pull.sh` | copy files Mac ↔ HiPerGator |
-| `alignment/grpo.py` | GRPO building blocks: `tokenize_prompt_and_output`, `get_response_log_probs`, `compute_rollout_rewards`, `compute_group_normalized_rewards`, `compute_policy_gradient_loss` (on-policy) |
-| `tests/adapters.py` | connects the course tests to `grpo.py`: `python -m pytest -k <test name>` |
-| `alignment/` (other files), `data/`, `tests/`, `pyproject.toml`, `uv.lock` | course starter code, data and tests (unchanged) |
+| `alignment/grpo.py` | GRPO, built up function by function: `tokenize_prompt_and_output`, `get_response_log_probs`, `compute_rollout_rewards`, `compute_group_normalized_rewards`, `compute_policy_gradient_loss` (on-policy) |
+| `alignment/drgrpo_grader.py`, `alignment/vllm_utils.py`, `alignment/checkpoint.py`, `alignment/prompts/` | grader, vLLM server + weight sync, model loading, prompts — from the course starter code, unchanged |
+| `data/gsm8k/` | GSM8K train / test (from the course repo) |
 
 ## Run
 
@@ -42,4 +42,4 @@ uv run python grade_baselines.py             # grading, no GPU
 
 ## Credits
 
-Starter code, prompts, grader, data and tests: [stanford-cs336/assignment5-alignment](https://github.com/stanford-cs336/assignment5-alignment).
+Grader, vLLM utilities, prompts and data: [stanford-cs336/assignment5-alignment](https://github.com/stanford-cs336/assignment5-alignment).
