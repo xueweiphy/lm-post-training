@@ -1,5 +1,6 @@
+from typing import Callable, Literal
 import torch
-from transformers import PreTrainedTokenizer
+from transformers import PreTrainedModel, PreTrainedTokenizer
 
 
 def tokenize_prompt_and_output(prompt_strs: list[str], output_strs: list[str],
@@ -20,3 +21,67 @@ def tokenize_prompt_and_output(prompt_strs: list[str], output_strs: list[str],
     dic["labels"] = ids[:, 1:]
     dic["response_mask"] = mask[:, 1:]
     return dic
+
+
+def get_response_log_probs(model: PreTrainedModel, input_ids: torch.Tensor, labels: torch.Tensor,
+                           return_token_entropy: bool = False) -> dict[str, torch.Tensor]:
+    logits = model(input_ids).logits
+    B, T, V = logits.shape
+    dic = {}
+    logp = torch.log_softmax(logits, dim=-1)
+    b = torch.arange(B, device=logp.device)[:, None]
+    t = torch.arange(T, device=logp.device)[None, :]
+    dic["log_probs"] = logp[b, t, labels]
+
+    if return_token_entropy:
+        dic["token_entropy"] = -(logp.exp() * logp).sum(dim=-1)
+    return dic
+
+
+def compute_rollout_rewards(reward_fn: Callable[[str, str], dict[str, float]], rollout_responses: list[str],
+                            repeated_ground_truths: list[str]) -> tuple[torch.Tensor, dict[str, float]]:
+    rewards = []
+    format_rewards = []
+    for rr, tt in zip(rollout_responses, repeated_ground_truths):
+        dic = reward_fn(rr, tt)
+        rewards.append(dic["reward"])
+        format_rewards.append(dic["format_reward"])
+
+    rewards = torch.tensor(rewards)
+    format_rewards = torch.tensor(format_rewards)
+    metadata = {"reward_mean": rewards.mean().item(),
+                "format_reward_mean": format_rewards.mean().item()}
+    return (rewards, metadata)
+
+
+def compute_group_normalized_rewards(raw_rewards: torch.Tensor, group_size: int,
+                                     baseline: Literal["mean", "none"] = "mean",
+                                     advantage_eps: float = 1e-6,
+                                     advantage_normalizer: Literal["std", "none", "mean"] = "std"):
+    rewards = raw_rewards.view(-1, group_size)
+    rewards_mean = rewards.mean(dim=1, keepdim=True)
+
+    Adv = rewards
+    if baseline == "mean":
+        Adv = rewards - rewards_mean
+
+    if advantage_normalizer == "std":
+        rewards_std = rewards.std(dim=1, keepdim=True)
+        Adv = Adv / (rewards_std + advantage_eps)
+    elif advantage_normalizer == "mean":
+        Adv = Adv / (rewards_mean + advantage_eps)
+
+    metadata = {"reward_mean": raw_rewards.mean().item(), "reward_std": raw_rewards.std().item()}
+    return (Adv.view(-1), metadata)
+
+
+def compute_policy_gradient_loss(raw_rewards_or_advantages: torch.Tensor, policy_log_probs: torch.Tensor,
+                                 importance_reweighting_method: Literal["none", "noclip", "grpo", "gspo"] = "none",
+                                 old_log_probs: torch.Tensor | None = None, cliprange: float | None = None,
+                                 response_mask: torch.Tensor | None = None) -> tuple[torch.Tensor, dict[str, torch.Tensor]]:
+    if importance_reweighting_method != "none":
+        raise NotImplementedError
+
+    loss = -raw_rewards_or_advantages.view(-1, 1) * policy_log_probs
+    metadata = {}
+    return (loss, metadata)
