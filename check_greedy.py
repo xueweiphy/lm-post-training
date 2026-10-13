@@ -1,12 +1,12 @@
 # Sanity check: 3-shot r1_zero, first 100 GSM8K test questions, greedy (temperature 0).
 # Run on two GPU types and compare accuracy and how often "mode" appears.
 import json, sys
-from cs336_alignment.vllm_utils import VLLMServer
-from cs336_alignment.drgrpo_grader import r1_zero_reward_fn
+from alignment.vllm_utils import VLLMServer
+from alignment.drgrpo_grader import r1_zero_reward_fn
 
 N = 100
 items = [json.loads(l) for l in open("data/gsm8k/test.jsonl")][:N]
-tmpl = open("cs336_alignment/prompts/r1_zero_three_shot_gsm8k.prompt").read()
+tmpl = open("alignment/prompts/r1_zero_three_shot_gsm8k.prompt").read()
 prompts = [tmpl.format(question=x["question"]) for x in items]
 answers = [x["answer"].split("####")[-1].strip() for x in items]
 

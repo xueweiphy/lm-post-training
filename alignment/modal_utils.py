@@ -3,7 +3,7 @@
 Example usage:
 
 import sys
-from cs336_alignment.modal_utils import app, quote_command, submit_commands
+from alignment.modal_utils import app, quote_command, submit_commands
 
 def build_run_commands(args):
     # Suppose args.seeds = '0,1,2,3'
@@ -29,7 +29,7 @@ import modal
 
 SUNET_ID = "TODO"  # NOTE: modal_utils.py should remain unchanged other than adding your SUNET_ID.
 if SUNET_ID == "TODO":
-    raise ValueError("Please set SUNET_ID in cs336_alignment/modal_utils.py before running Modal jobs.")
+    raise ValueError("Please set SUNET_ID in alignment/modal_utils.py before running Modal jobs.")
 
 
 GPU = "B200:2"
@@ -48,7 +48,7 @@ image = (
     )
     .uv_sync(extras=["gpu"])
     .workdir(REMOTE_ROOT)
-    .add_local_dir("cs336_alignment", f"{REMOTE_ROOT}/cs336_alignment")
+    .add_local_dir("alignment", f"{REMOTE_ROOT}/alignment")
     .add_local_dir("data", f"{REMOTE_ROOT}/data")
     .add_local_dir("experiments", f"{REMOTE_ROOT}/experiments")
     .add_local_dir("scripts", f"{REMOTE_ROOT}/scripts")
