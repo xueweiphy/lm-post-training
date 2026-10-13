@@ -99,3 +99,57 @@ def aggregate_loss_across_microbatch(per_token_policy_gradient_loss: torch.Tenso
     else:
         raise NotImplementedError
     return loss
+
+
+def grpo_train_step(model: PreTrainedModel, tokenizer: PreTrainedTokenizer,
+                    optimizer: torch.optim.Optimizer,
+                    gradient_accumulation_steps: int, 
+                    max_grad_norm: float | None,
+                    reward_fn: Callable[[str, str], dict[str, float]],
+                    repeated_prompts: list[str], rollout_responses: list[str],
+                    repeated_ground_truths: list[str], group_size: int,
+                    baseline: Literal["mean", "none"] = "mean",
+                    advantage_eps: float = 1e-6,
+                    advantage_normalizer: Literal["std", "none", "mean"] = "std",
+                    importance_reweighting_method: Literal["none", "noclip", "grpo", "gspo"] = "none",
+                    old_log_probs: torch.Tensor | None = None,
+                    cliprange: float | None = None,
+                    loss_normalization: Literal["sequence", "constant"] = "sequence",
+                    normalization_constant: int | None = None,
+                    ) -> tuple[torch.Tensor, dict[str, torch.Tensor | float]]:
+    # get rewards and adv
+    raw_rewards, meta = compute_rollout_rewards(reward_fn, rollout_responses, repeated_ground_truths)
+    adv, _ = compute_group_normalized_rewards(raw_rewards, group_size, baseline, advantage_eps, advantage_normalizer)
+    # tokenize
+    toks = tokenize_prompt_and_output( repeated_prompts, rollout_responses, tokenizer ) 
+
+    mask = toks["response_mask"]
+    inputs = toks["input_ids"]
+    labels = toks["labels"]
+    
+    microbatch_size = len(inputs) // gradient_accumulation_steps
+    total = 0.0
+    for i in range(0, len(inputs), microbatch_size):
+        inputs_microbatch = inputs[i:i+microbatch_size]
+        labels_microbatch = labels[i:i+microbatch_size]
+        mask_microbatch = mask[i:i+microbatch_size]
+        adv_microbatch = adv[i:i+microbatch_size]
+
+        dic0  = get_response_log_probs ( model, inputs_microbatch, labels_microbatch )
+        logprobs = dic0["log_probs"]
+
+        grad_loss, _ = compute_policy_gradient_loss(adv_microbatch, logprobs, importance_reweighting_method, 
+                                                    old_log_probs, cliprange, mask_microbatch)
+        loss = aggregate_loss_across_microbatch(grad_loss, mask_microbatch, loss_normalization, 
+                                                normalization_constant) / gradient_accumulation_steps
+
+        total += loss.detach()
+
+        loss.backward()
+
+    if max_grad_norm is not None:
+        meta["grad_norm"] = torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm).item()
+    optimizer.step()
+
+    optimizer.zero_grad()
+    return ( total, meta)

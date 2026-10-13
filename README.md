@@ -36,8 +36,8 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | `compute_group_normalized_rewards` | advantages: group mean baseline, std normalizer | done |
 | `compute_policy_gradient_loss` | per-token loss `-A · log π` (on-policy) | done |
 | `aggregate_loss_across_microbatch` | masked mean over tokens, then over sequences (or / constant) | done |
-| `grpo_train_step` | microbatched gradient accumulation, grad clipping, logging | next |
-| training loop with vLLM rollouts and weight sync | — | — |
+| `grpo_train_step` | microbatched gradient accumulation, grad clipping, logging | done |
+| training loop with vLLM rollouts and weight sync | — | next |
 
 ## Layout
 
