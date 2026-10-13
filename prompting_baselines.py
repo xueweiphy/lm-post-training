@@ -1,7 +1,7 @@
 # Problem (prompting_baselines): generate GSM8K test answers with three prompts.
 # GPU job: sbatch run_gpu.sh prompting_baselines.py  → results/<prompt>.jsonl
 import json, os
-from alignment.vllm_utils import VLLMServer
+from vllm_utils import VLLMServer
 
 questions, answers = [], []
 with open("data/gsm8k/test.jsonl") as f:
@@ -14,7 +14,7 @@ cases = ["question_only.prompt", "r1_zero.prompt", "r1_zero_three_shot_gsm8k.pro
 
 prompts = {}
 for cc in cases:
-    with open("alignment/prompts/" + cc) as f:
+    with open("prompts/" + cc) as f:
         template = f.read()
     prompts[cc] = [template.format(question=qq) for qq in questions]
     print(f"{cc}, len of prompts {len(prompts[cc])}")

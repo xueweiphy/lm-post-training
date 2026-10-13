@@ -1,6 +1,6 @@
 # Grade results/<prompt>.jsonl with the Dr. GRPO grader (no GPU) → results/<prompt>.graded.jsonl
 import json
-from alignment.drgrpo_grader import r1_zero_reward_fn, question_only_reward_fn
+from drgrpo_grader import r1_zero_reward_fn, question_only_reward_fn
 
 questions, answers = [], []
 with open("data/gsm8k/test.jsonl") as f:

@@ -28,8 +28,8 @@ Same 3-shot prompt with greedy decoding, first 100 questions: 38 % accuracy, 100
 | `check_greedy.py` | greedy 3-shot sanity check on 100 questions |
 | `run_gpu.sh` | Slurm job: `sbatch run_gpu.sh <script.py> [args]` |
 | `push.sh`, `pull.sh` | copy files Mac ↔ HiPerGator |
-| `alignment/grpo.py` | GRPO, built up function by function: `tokenize_prompt_and_output`, `get_response_log_probs`, `compute_rollout_rewards`, `compute_group_normalized_rewards`, `compute_policy_gradient_loss` (on-policy) |
-| `alignment/drgrpo_grader.py`, `alignment/vllm_utils.py`, `alignment/checkpoint.py`, `alignment/prompts/` | grader, vLLM server + weight sync, model loading, prompts — from the course starter code, unchanged |
+| `grpo.py` | GRPO, built up function by function: `tokenize_prompt_and_output`, `get_response_log_probs`, `compute_rollout_rewards`, `compute_group_normalized_rewards`, `compute_policy_gradient_loss` (on-policy) |
+| `drgrpo_grader.py`, `vllm_utils.py`, `checkpoint.py`, `prompts/` | grader, vLLM server + weight sync, model loading, prompts — from the course starter code, unchanged |
 | `data/gsm8k/` | GSM8K train / test (from the course repo) |
 
 ## Run

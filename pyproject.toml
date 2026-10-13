@@ -1,5 +1,5 @@
 [project]
-name = "alignment"
+name = "lm-post-training"
 version = "1.0.0"
 description = "GRPO on GSM8K with OLMo-2-1B, built function by function"
 readme = "README.md"
@@ -26,11 +26,8 @@ plots = [
     "wandb>=0.26.0",
 ]
 
-[tool.setuptools.packages.find]
-include = ["alignment*"]
-
 [tool.uv]
-package = true
+package = false
 environments = [
     "sys_platform == 'darwin' and platform_machine == 'arm64'",
     "sys_platform == 'linux' and platform_machine == 'x86_64'",
