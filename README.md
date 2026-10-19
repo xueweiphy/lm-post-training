@@ -8,7 +8,7 @@ self-study project.
 Plan: prompting baselines → GRPO → RL variants (RFT, Dr. GRPO, MaxRL) → off-policy GRPO with
 clipping → (later) instruction-tuning SFT and DPO.
 
-Compute: one GPU on UF HiPerGator (B200 / RTX PRO 6000).
+Compute: UF HiPerGator (B200 / RTX PRO 6000); one GPU for the baselines, two for GRPO training.
 
 ## Results so far
 
@@ -37,13 +37,14 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | `compute_policy_gradient_loss` | per-token loss `-A · log π` (on-policy) | done |
 | `aggregate_loss_across_microbatch` | masked mean over tokens, then over sequences (or / constant) | done |
 | `grpo_train_step` | microbatched gradient accumulation, grad clipping, logging | done |
-| training loop with vLLM rollouts and weight sync | — | next |
+| training loop (`grpo_train.py`) | vLLM rollouts + weight sync, validation every 10 steps, JSON-lines log | written, first GPU run next |
 
 ## Layout
 
 | file | what |
 |---|---|
 | `grpo.py` | the GRPO components (table above) |
+| `grpo_train.py` | GRPO training loop: policy on GPU 0, vLLM on GPU 1 → `results/grpo_seed<seed>.jsonl` |
 | `prompting_baselines.py` | generate answers for the three prompts (GPU) → `results/<prompt>.jsonl` |
 | `grade_baselines.py` | grade with the Dr. GRPO grader, count categories → `results/<prompt>.graded.jsonl` |
 | `inspect_baselines.py` | print random category-2 / category-3 examples for reading |
@@ -60,6 +61,7 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 uv sync --extra gpu                          # on a GPU node, once
 sbatch run_gpu.sh prompting_baselines.py     # generation (GPU)
 uv run python grade_baselines.py             # grading (no GPU)
+sbatch -p hpg-b200 --gres=gpu:b200:2 --time=03:00:00 run_gpu.sh grpo_train.py   # GRPO (2 GPUs)
 ```
 
 ## Credits
