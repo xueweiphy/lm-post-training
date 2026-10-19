@@ -123,9 +123,10 @@ def grpo_train_step(model: PreTrainedModel, tokenizer: PreTrainedTokenizer,
     # tokenize
     toks = tokenize_prompt_and_output( repeated_prompts, rollout_responses, tokenizer ) 
 
-    mask = toks["response_mask"]
-    inputs = toks["input_ids"]
-    labels = toks["labels"]
+    mask = toks["response_mask"].to(model.device)
+    inputs = toks["input_ids"].to(model.device)
+    labels = toks["labels"].to(model.device)
+    adv = adv.to(model.device)
     
     microbatch_size = len(inputs) // gradient_accumulation_steps
     total = 0.0

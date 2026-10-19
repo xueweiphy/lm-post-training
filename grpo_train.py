@@ -73,7 +73,7 @@ optimizer = torch.optim.AdamW ( model.parameters(), lr = learning_rate, betas = 
 server = VLLMServer ( model_id, gpu=1)
 server.start ()
 server.init_weight_sync(device)
-params = {"temperature": sampling_temperature, "max_tokens" : sampling_max_tokens, "n": 1,
+params = {"temperature": sampling_temperature, "max_tokens" : sampling_max_tokens, "n": 1, "seed": None,
             "stop": ["</answer>"], "include_stop_str_in_output": True}
 
 n_prompts = rollout_batch_size // group_size
