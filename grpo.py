@@ -92,7 +92,7 @@ def aggregate_loss_across_microbatch(per_token_policy_gradient_loss: torch.Tenso
                                      normalization_constant: int | None = None) -> torch.Tensor:
     loss = per_token_policy_gradient_loss * mask
     if loss_normalization == "sequence":
-        loss = loss.sum(dim=-1) / mask.sum(dim=-1)
+        loss = loss.sum(dim=-1) / mask.sum(dim=-1).clamp(min=1)
         loss = loss.mean()
     elif loss_normalization == "constant":
         loss = loss.sum() / normalization_constant
@@ -150,7 +150,8 @@ def grpo_train_step(model: PreTrainedModel, tokenizer: PreTrainedTokenizer,
 
     if max_grad_norm is not None:
         meta["grad_norm"] = torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm).item()
-    optimizer.step()
+    if torch.isfinite(torch.tensor(meta.get("grad_norm", 0.0))):
+        optimizer.step()
 
     optimizer.zero_grad()
     return ( total, meta)

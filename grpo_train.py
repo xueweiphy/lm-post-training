@@ -107,6 +107,10 @@ for step in range(num_rollout_steps):
                         rollout_responses=rollout_responses,
                         repeated_ground_truths=repeated_ground_truths,
                         group_size=group_size)
+    rec["n_empty"] = sum(len(o.token_ids) == 0 for o in outs)
+    if loss.isnan():
+        json.dump({"responses": rollout_responses, "gt": repeated_ground_truths},
+                  open(f"results/nan_step{step}.json", "w"))
     rec["loss"] = loss.item()
     rec = rec | meta
     f.write ( json.dumps ( rec ) +"\n"  )
