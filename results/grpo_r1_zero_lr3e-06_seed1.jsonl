@@ -1,0 +1,201 @@
+{"step": 0, "val_reward": 0.0, "val_format_reward": 0.5283203125, "val_length": 105.298828125, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.53515625, "token_entropy": 1.0234375, "grad_norm": 0.0}
+{"step": 1, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.49609375, "token_entropy": 1.015625, "grad_norm": 0.0}
+{"step": 2, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5703125, "token_entropy": 0.95703125, "grad_norm": 0.0}
+{"step": 3, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5546875, "token_entropy": 1.0234375, "grad_norm": 0.0}
+{"step": 4, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.52734375, "token_entropy": 1.015625, "grad_norm": 0.0}
+{"step": 5, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.54296875, "token_entropy": 0.9375, "grad_norm": 0.0}
+{"step": 6, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.50390625, "token_entropy": 1.03125, "grad_norm": 0.0}
+{"step": 7, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.51171875, "token_entropy": 1.015625, "grad_norm": 0.0}
+{"step": 8, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.4765625, "token_entropy": 1.0, "grad_norm": 0.0}
+{"step": 9, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.546875, "token_entropy": 1.0625, "grad_norm": 0.0}
+{"step": 10, "val_reward": 0.001953125, "val_format_reward": 0.509765625, "val_length": 103.9873046875, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.50390625, "token_entropy": 0.984375, "grad_norm": 0.0}
+{"step": 11, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.48046875, "token_entropy": 0.97265625, "grad_norm": 0.0}
+{"step": 12, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.546875, "token_entropy": 0.984375, "grad_norm": 0.0}
+{"step": 13, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.54296875, "token_entropy": 1.0390625, "grad_norm": 0.0}
+{"step": 14, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.578125, "token_entropy": 0.88671875, "grad_norm": 0.0}
+{"step": 15, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.53515625, "token_entropy": 1.0546875, "grad_norm": 0.0}
+{"step": 16, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.46875, "token_entropy": 1.0625, "grad_norm": 0.0}
+{"step": 17, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.53125, "token_entropy": 0.96875, "grad_norm": 0.0}
+{"step": 18, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5703125, "token_entropy": 0.94921875, "grad_norm": 0.0}
+{"step": 19, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.57421875, "token_entropy": 1.0, "grad_norm": 0.0}
+{"step": 20, "val_reward": 0.0, "val_format_reward": 0.5, "val_length": 107.4248046875, "n_empty": 0, "loss": -0.0032734801061451435, "reward_mean": 0.00390625, "format_reward_mean": 0.51171875, "token_entropy": 0.9453125, "grad_norm": 0.34765625}
+{"step": 21, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.50390625, "token_entropy": 1.1640625, "grad_norm": 0.0}
+{"step": 22, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5234375, "token_entropy": 0.99609375, "grad_norm": 0.0}
+{"step": 23, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.53515625, "token_entropy": 0.9609375, "grad_norm": 0.0}
+{"step": 24, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5546875, "token_entropy": 0.9375, "grad_norm": 0.0}
+{"step": 25, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.4453125, "token_entropy": 1.046875, "grad_norm": 0.0}
+{"step": 26, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.53125, "token_entropy": 1.015625, "grad_norm": 0.0}
+{"step": 27, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.49609375, "token_entropy": 1.1171875, "grad_norm": 0.0}
+{"step": 28, "n_empty": 0, "loss": -0.0036435145884752274, "reward_mean": 0.00390625, "format_reward_mean": 0.46484375, "token_entropy": 0.9609375, "grad_norm": 0.1259765625}
+{"step": 29, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5625, "token_entropy": 1.0, "grad_norm": 0.0}
+{"step": 30, "val_reward": 0.0, "val_format_reward": 0.5205078125, "val_length": 100.52734375, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.48046875, "token_entropy": 1.015625, "grad_norm": 0.0}
+{"step": 31, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.55078125, "token_entropy": 0.92578125, "grad_norm": 0.0}
+{"step": 32, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.49609375, "token_entropy": 1.0234375, "grad_norm": 0.0}
+{"step": 33, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.515625, "token_entropy": 0.9765625, "grad_norm": 0.0}
+{"step": 34, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.48046875, "token_entropy": 0.984375, "grad_norm": 0.0}
+{"step": 35, "n_empty": 0, "loss": 0.0012515936978161335, "reward_mean": 0.00390625, "format_reward_mean": 0.5234375, "token_entropy": 0.9765625, "grad_norm": 0.265625}
+{"step": 36, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5703125, "token_entropy": 1.0, "grad_norm": 0.0}
+{"step": 37, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5234375, "token_entropy": 0.9921875, "grad_norm": 0.0}
+{"step": 38, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5234375, "token_entropy": 0.93359375, "grad_norm": 0.0}
+{"step": 39, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.546875, "token_entropy": 1.03125, "grad_norm": 0.0}
+{"step": 40, "val_reward": 0.0048828125, "val_format_reward": 0.5595703125, "val_length": 100.060546875, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.51171875, "token_entropy": 0.94921875, "grad_norm": 0.0}
+{"step": 41, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5078125, "token_entropy": 1.0234375, "grad_norm": 0.0}
+{"step": 42, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.51953125, "token_entropy": 0.98046875, "grad_norm": 0.0}
+{"step": 43, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.578125, "token_entropy": 1.0078125, "grad_norm": 0.0}
+{"step": 44, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.48828125, "token_entropy": 1.0234375, "grad_norm": 0.0}
+{"step": 45, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.50390625, "token_entropy": 1.0625, "grad_norm": 0.0}
+{"step": 46, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.515625, "token_entropy": 0.96484375, "grad_norm": 0.0}
+{"step": 47, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.52734375, "token_entropy": 0.95703125, "grad_norm": 0.0}
+{"step": 48, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.578125, "token_entropy": 1.078125, "grad_norm": 0.0}
+{"step": 49, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.4765625, "token_entropy": 1.0234375, "grad_norm": 0.0}
+{"step": 50, "val_reward": 0.0, "val_format_reward": 0.5458984375, "val_length": 102.5927734375, "n_empty": 0, "loss": -0.005623108707368374, "reward_mean": 0.0078125, "format_reward_mean": 0.5390625, "token_entropy": 0.96484375, "grad_norm": 0.373046875}
+{"step": 51, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5234375, "token_entropy": 0.9921875, "grad_norm": 0.0}
+{"step": 52, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.55078125, "token_entropy": 0.98828125, "grad_norm": 0.0}
+{"step": 53, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.48828125, "token_entropy": 1.0546875, "grad_norm": 0.0}
+{"step": 54, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.51953125, "token_entropy": 1.0078125, "grad_norm": 0.0}
+{"step": 55, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.58203125, "token_entropy": 1.0078125, "grad_norm": 0.0}
+{"step": 56, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.56640625, "token_entropy": 0.9609375, "grad_norm": 0.0}
+{"step": 57, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.53515625, "token_entropy": 1.09375, "grad_norm": 0.0}
+{"step": 58, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.546875, "token_entropy": 0.96875, "grad_norm": 0.0}
+{"step": 59, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5703125, "token_entropy": 1.0703125, "grad_norm": 0.0}
+{"step": 60, "val_reward": 0.0009765625, "val_format_reward": 0.525390625, "val_length": 107.35546875, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.53515625, "token_entropy": 1.03125, "grad_norm": 0.0}
+{"step": 61, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.51953125, "token_entropy": 1.0390625, "grad_norm": 0.0}
+{"step": 62, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.54296875, "token_entropy": 0.9453125, "grad_norm": 0.0}
+{"step": 63, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.57421875, "token_entropy": 1.0546875, "grad_norm": 0.0}
+{"step": 64, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.50390625, "token_entropy": 0.9921875, "grad_norm": 0.0}
+{"step": 65, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5625, "token_entropy": 0.96875, "grad_norm": 0.0}
+{"step": 66, "n_empty": 0, "loss": -0.0033859964460134506, "reward_mean": 0.00390625, "format_reward_mean": 0.55859375, "token_entropy": 1.015625, "grad_norm": 0.2373046875}
+{"step": 67, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.59375, "token_entropy": 0.9765625, "grad_norm": 0.0}
+{"step": 68, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.57421875, "token_entropy": 1.0390625, "grad_norm": 0.0}
+{"step": 69, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.48828125, "token_entropy": 0.98046875, "grad_norm": 0.0}
+{"step": 70, "val_reward": 0.0, "val_format_reward": 0.548828125, "val_length": 104.83203125, "n_empty": 0, "loss": 0.002431673463433981, "reward_mean": 0.00390625, "format_reward_mean": 0.5546875, "token_entropy": 1.0, "grad_norm": 0.244140625}
+{"step": 71, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.61328125, "token_entropy": 0.984375, "grad_norm": 0.0}
+{"step": 72, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5078125, "token_entropy": 0.97265625, "grad_norm": 0.0}
+{"step": 73, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.58984375, "token_entropy": 0.953125, "grad_norm": 0.0}
+{"step": 74, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.59375, "token_entropy": 1.0, "grad_norm": 0.0}
+{"step": 75, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5859375, "token_entropy": 0.94921875, "grad_norm": 0.0}
+{"step": 76, "n_empty": 0, "loss": -0.012234100140631199, "reward_mean": 0.0078125, "format_reward_mean": 0.54296875, "token_entropy": 0.93359375, "grad_norm": 0.224609375}
+{"step": 77, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.48828125, "token_entropy": 1.0078125, "grad_norm": 0.0}
+{"step": 78, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.58984375, "token_entropy": 0.94921875, "grad_norm": 0.0}
+{"step": 79, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.53125, "token_entropy": 0.95703125, "grad_norm": 0.0}
+{"step": 80, "val_reward": 0.0, "val_format_reward": 0.5634765625, "val_length": 97.0810546875, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.59765625, "token_entropy": 1.0078125, "grad_norm": 0.0}
+{"step": 81, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5234375, "token_entropy": 0.9140625, "grad_norm": 0.0}
+{"step": 82, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.609375, "token_entropy": 0.97265625, "grad_norm": 0.0}
+{"step": 83, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5703125, "token_entropy": 1.1015625, "grad_norm": 0.0}
+{"step": 84, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.55078125, "token_entropy": 1.0078125, "grad_norm": 0.0}
+{"step": 85, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.55078125, "token_entropy": 1.0625, "grad_norm": 0.0}
+{"step": 86, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.57421875, "token_entropy": 0.98828125, "grad_norm": 0.0}
+{"step": 87, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.55859375, "token_entropy": 0.93359375, "grad_norm": 0.0}
+{"step": 88, "n_empty": 0, "loss": -0.003958916291594505, "reward_mean": 0.00390625, "format_reward_mean": 0.53125, "token_entropy": 0.99609375, "grad_norm": 0.248046875}
+{"step": 89, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.56640625, "token_entropy": 1.0390625, "grad_norm": 0.0}
+{"step": 90, "val_reward": 0.0, "val_format_reward": 0.572265625, "val_length": 98.375, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.58203125, "token_entropy": 0.98828125, "grad_norm": 0.0}
+{"step": 91, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.59765625, "token_entropy": 1.0078125, "grad_norm": 0.0}
+{"step": 92, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.58984375, "token_entropy": 0.9609375, "grad_norm": 0.0}
+{"step": 93, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.578125, "token_entropy": 1.03125, "grad_norm": 0.0}
+{"step": 94, "n_empty": 0, "loss": -0.007895935326814651, "reward_mean": 0.00390625, "format_reward_mean": 0.62890625, "token_entropy": 1.015625, "grad_norm": 0.203125}
+{"step": 95, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.57421875, "token_entropy": 0.98828125, "grad_norm": 0.0}
+{"step": 96, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5625, "token_entropy": 0.92578125, "grad_norm": 0.0}
+{"step": 97, "n_empty": 0, "loss": 0.00030016107484698296, "reward_mean": 0.00390625, "format_reward_mean": 0.55859375, "token_entropy": 1.0703125, "grad_norm": 0.38671875}
+{"step": 98, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5546875, "token_entropy": 0.9609375, "grad_norm": 0.0}
+{"step": 99, "n_empty": 0, "loss": 0.0008616726845502853, "reward_mean": 0.00390625, "format_reward_mean": 0.56640625, "token_entropy": 0.9375, "grad_norm": 0.259765625}
+{"step": 100, "val_reward": 0.0009765625, "val_format_reward": 0.580078125, "val_length": 91.06640625, "n_empty": 0, "loss": -0.003911328501999378, "reward_mean": 0.00390625, "format_reward_mean": 0.54296875, "token_entropy": 1.015625, "grad_norm": 0.2216796875}
+{"step": 101, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.6015625, "token_entropy": 0.96484375, "grad_norm": 0.0}
+{"step": 102, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.53125, "token_entropy": 0.96875, "grad_norm": 0.0}
+{"step": 103, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.55859375, "token_entropy": 1.0234375, "grad_norm": 0.0}
+{"step": 104, "n_empty": 0, "loss": -0.003164478577673435, "reward_mean": 0.00390625, "format_reward_mean": 0.56640625, "token_entropy": 0.97265625, "grad_norm": 0.1728515625}
+{"step": 105, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.60546875, "token_entropy": 1.0078125, "grad_norm": 0.0}
+{"step": 106, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.58203125, "token_entropy": 1.0625, "grad_norm": 0.0}
+{"step": 107, "n_empty": 0, "loss": -0.013715079054236412, "reward_mean": 0.00390625, "format_reward_mean": 0.5625, "token_entropy": 0.9453125, "grad_norm": 0.1416015625}
+{"step": 108, "n_empty": 0, "loss": -0.0014677364379167557, "reward_mean": 0.00390625, "format_reward_mean": 0.5546875, "token_entropy": 1.0, "grad_norm": 0.515625}
+{"step": 109, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.63671875, "token_entropy": 0.95703125, "grad_norm": 0.0}
+{"step": 110, "val_reward": 0.0029296875, "val_format_reward": 0.5849609375, "val_length": 90.939453125, "n_empty": 0, "loss": -0.004457220435142517, "reward_mean": 0.00390625, "format_reward_mean": 0.6171875, "token_entropy": 1.0234375, "grad_norm": 0.146484375}
+{"step": 111, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.609375, "token_entropy": 0.94921875, "grad_norm": 0.0}
+{"step": 112, "n_empty": 0, "loss": -0.007854829542338848, "reward_mean": 0.01171875, "format_reward_mean": 0.58203125, "token_entropy": 1.0390625, "grad_norm": 0.326171875}
+{"step": 113, "n_empty": 0, "loss": 0.006738102994859219, "reward_mean": 0.00390625, "format_reward_mean": 0.58203125, "token_entropy": 0.953125, "grad_norm": 0.51953125}
+{"step": 114, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5390625, "token_entropy": 1.0, "grad_norm": 0.0}
+{"step": 115, "n_empty": 0, "loss": -0.01159248873591423, "reward_mean": 0.0078125, "format_reward_mean": 0.5625, "token_entropy": 1.1328125, "grad_norm": 0.3203125}
+{"step": 116, "n_empty": 0, "loss": -0.004283886402845383, "reward_mean": 0.00390625, "format_reward_mean": 0.57421875, "token_entropy": 0.953125, "grad_norm": 0.13671875}
+{"step": 117, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.5859375, "token_entropy": 0.99609375, "grad_norm": 0.0}
+{"step": 118, "n_empty": 0, "loss": 0.009815294295549393, "reward_mean": 0.0078125, "format_reward_mean": 0.56640625, "token_entropy": 0.92578125, "grad_norm": 0.458984375}
+{"step": 119, "n_empty": 0, "loss": -0.0021414770744740963, "reward_mean": 0.0078125, "format_reward_mean": 0.55859375, "token_entropy": 0.95703125, "grad_norm": 0.4375}
+{"step": 120, "val_reward": 0.001953125, "val_format_reward": 0.578125, "val_length": 91.16015625, "n_empty": 0, "loss": -0.00611275527626276, "reward_mean": 0.0078125, "format_reward_mean": 0.6015625, "token_entropy": 0.97265625, "grad_norm": 0.26953125}
+{"step": 121, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.53515625, "token_entropy": 0.96484375, "grad_norm": 0.0}
+{"step": 122, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.578125, "token_entropy": 0.99609375, "grad_norm": 0.0}
+{"step": 123, "n_empty": 0, "loss": -0.003133066464215517, "reward_mean": 0.00390625, "format_reward_mean": 0.56640625, "token_entropy": 1.0234375, "grad_norm": 0.2275390625}
+{"step": 124, "n_empty": 0, "loss": -0.005049859173595905, "reward_mean": 0.00390625, "format_reward_mean": 0.578125, "token_entropy": 0.98828125, "grad_norm": 0.18359375}
+{"step": 125, "n_empty": 0, "loss": -0.009193654172122478, "reward_mean": 0.00390625, "format_reward_mean": 0.56640625, "token_entropy": 1.0234375, "grad_norm": 0.15625}
+{"step": 126, "n_empty": 0, "loss": -0.004709674045443535, "reward_mean": 0.00390625, "format_reward_mean": 0.65625, "token_entropy": 0.9609375, "grad_norm": 0.203125}
+{"step": 127, "n_empty": 0, "loss": -0.008790627121925354, "reward_mean": 0.0078125, "format_reward_mean": 0.671875, "token_entropy": 0.92578125, "grad_norm": 0.224609375}
+{"step": 128, "n_empty": 0, "loss": -0.0026392387226223946, "reward_mean": 0.00390625, "format_reward_mean": 0.609375, "token_entropy": 1.0234375, "grad_norm": 0.333984375}
+{"step": 129, "n_empty": 0, "loss": -0.0010910879354923964, "reward_mean": 0.0078125, "format_reward_mean": 0.59375, "token_entropy": 1.0, "grad_norm": 0.451171875}
+{"step": 130, "val_reward": 0.0048828125, "val_format_reward": 0.6142578125, "val_length": 83.87890625, "n_empty": 0, "loss": 0.007294819690287113, "reward_mean": 0.0078125, "format_reward_mean": 0.66796875, "token_entropy": 1.0078125, "grad_norm": 0.59765625}
+{"step": 131, "n_empty": 0, "loss": 0.013508929871022701, "reward_mean": 0.00390625, "format_reward_mean": 0.5703125, "token_entropy": 1.078125, "grad_norm": 0.65234375}
+{"step": 132, "n_empty": 0, "loss": -0.00013027386739850044, "reward_mean": 0.00390625, "format_reward_mean": 0.62109375, "token_entropy": 0.9609375, "grad_norm": 0.1630859375}
+{"step": 133, "n_empty": 0, "loss": -0.0027952815871685743, "reward_mean": 0.0078125, "format_reward_mean": 0.55859375, "token_entropy": 1.0390625, "grad_norm": 0.26953125}
+{"step": 134, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.69140625, "token_entropy": 0.95703125, "grad_norm": 0.0}
+{"step": 135, "n_empty": 0, "loss": -0.010288471356034279, "reward_mean": 0.00390625, "format_reward_mean": 0.62890625, "token_entropy": 1.0078125, "grad_norm": 0.1953125}
+{"step": 136, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.56640625, "token_entropy": 0.94140625, "grad_norm": 0.0}
+{"step": 137, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.65234375, "token_entropy": 1.03125, "grad_norm": 0.0}
+{"step": 138, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.671875, "token_entropy": 0.953125, "grad_norm": 0.0}
+{"step": 139, "n_empty": 0, "loss": 0.010438254103064537, "reward_mean": 0.00390625, "format_reward_mean": 0.59765625, "token_entropy": 1.0234375, "grad_norm": 0.443359375}
+{"step": 140, "val_reward": 0.0068359375, "val_format_reward": 0.6240234375, "val_length": 85.296875, "n_empty": 0, "loss": 0.006195335183292627, "reward_mean": 0.0078125, "format_reward_mean": 0.58203125, "token_entropy": 1.0859375, "grad_norm": 0.45703125}
+{"step": 141, "n_empty": 0, "loss": -0.0022033562418073416, "reward_mean": 0.00390625, "format_reward_mean": 0.6484375, "token_entropy": 0.953125, "grad_norm": 0.15625}
+{"step": 142, "n_empty": 0, "loss": -0.00012285448610782623, "reward_mean": 0.0078125, "format_reward_mean": 0.62109375, "token_entropy": 1.015625, "grad_norm": 0.4609375}
+{"step": 143, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.62890625, "token_entropy": 0.99609375, "grad_norm": 0.0}
+{"step": 144, "n_empty": 0, "loss": 0.005593110807240009, "reward_mean": 0.00390625, "format_reward_mean": 0.65625, "token_entropy": 0.98046875, "grad_norm": 0.33984375}
+{"step": 145, "n_empty": 0, "loss": -0.009621994569897652, "reward_mean": 0.0078125, "format_reward_mean": 0.69921875, "token_entropy": 0.9765625, "grad_norm": 0.265625}
+{"step": 146, "n_empty": 0, "loss": -0.010499007999897003, "reward_mean": 0.0078125, "format_reward_mean": 0.6328125, "token_entropy": 1.1015625, "grad_norm": 0.365234375}
+{"step": 147, "n_empty": 0, "loss": -0.007986748591065407, "reward_mean": 0.00390625, "format_reward_mean": 0.578125, "token_entropy": 1.0390625, "grad_norm": 0.2255859375}
+{"step": 148, "n_empty": 0, "loss": -0.016882121562957764, "reward_mean": 0.0078125, "format_reward_mean": 0.69921875, "token_entropy": 1.0234375, "grad_norm": 0.259765625}
+{"step": 149, "n_empty": 0, "loss": -0.0014953096397221088, "reward_mean": 0.00390625, "format_reward_mean": 0.68359375, "token_entropy": 0.95703125, "grad_norm": 0.1611328125}
+{"step": 150, "val_reward": 0.0126953125, "val_format_reward": 0.6396484375, "val_length": 82.5693359375, "n_empty": 0, "loss": -0.004921410232782364, "reward_mean": 0.00390625, "format_reward_mean": 0.61328125, "token_entropy": 0.953125, "grad_norm": 0.11962890625}
+{"step": 151, "n_empty": 0, "loss": -0.0076307025738060474, "reward_mean": 0.0078125, "format_reward_mean": 0.62109375, "token_entropy": 1.03125, "grad_norm": 0.2734375}
+{"step": 152, "n_empty": 0, "loss": -0.008783604949712753, "reward_mean": 0.0078125, "format_reward_mean": 0.66015625, "token_entropy": 0.95703125, "grad_norm": 0.392578125}
+{"step": 153, "n_empty": 0, "loss": -0.011153532192111015, "reward_mean": 0.015625, "format_reward_mean": 0.6875, "token_entropy": 0.9609375, "grad_norm": 0.466796875}
+{"step": 154, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.66796875, "token_entropy": 1.0078125, "grad_norm": 0.0}
+{"step": 155, "n_empty": 0, "loss": -0.007876585237681866, "reward_mean": 0.0078125, "format_reward_mean": 0.6015625, "token_entropy": 0.98046875, "grad_norm": 0.26171875}
+{"step": 156, "n_empty": 0, "loss": 0.0010863742791116238, "reward_mean": 0.00390625, "format_reward_mean": 0.69140625, "token_entropy": 0.97265625, "grad_norm": 0.28515625}
+{"step": 157, "n_empty": 0, "loss": -0.004430188797414303, "reward_mean": 0.00390625, "format_reward_mean": 0.625, "token_entropy": 1.0234375, "grad_norm": 0.314453125}
+{"step": 158, "n_empty": 0, "loss": -0.009510280564427376, "reward_mean": 0.0078125, "format_reward_mean": 0.6875, "token_entropy": 1.0078125, "grad_norm": 0.177734375}
+{"step": 159, "n_empty": 0, "loss": -0.005387289449572563, "reward_mean": 0.0078125, "format_reward_mean": 0.66015625, "token_entropy": 0.92578125, "grad_norm": 0.361328125}
+{"step": 160, "val_reward": 0.01171875, "val_format_reward": 0.63671875, "val_length": 77.58203125, "n_empty": 0, "loss": 0.0033097057603299618, "reward_mean": 0.01171875, "format_reward_mean": 0.60546875, "token_entropy": 0.9921875, "grad_norm": 0.478515625}
+{"step": 161, "n_empty": 0, "loss": 0.011193848215043545, "reward_mean": 0.015625, "format_reward_mean": 0.6640625, "token_entropy": 0.984375, "grad_norm": 0.5234375}
+{"step": 162, "n_empty": 0, "loss": -0.004776564426720142, "reward_mean": 0.01171875, "format_reward_mean": 0.6328125, "token_entropy": 1.0078125, "grad_norm": 0.33984375}
+{"step": 163, "n_empty": 0, "loss": 0.0021083769388496876, "reward_mean": 0.01953125, "format_reward_mean": 0.625, "token_entropy": 0.9921875, "grad_norm": 0.7109375}
+{"step": 164, "n_empty": 0, "loss": -0.0080165546387434, "reward_mean": 0.01171875, "format_reward_mean": 0.6796875, "token_entropy": 0.95703125, "grad_norm": 0.5390625}
+{"step": 165, "n_empty": 0, "loss": -0.005696260370314121, "reward_mean": 0.00390625, "format_reward_mean": 0.703125, "token_entropy": 1.03125, "grad_norm": 0.1279296875}
+{"step": 166, "n_empty": 0, "loss": -0.011420043185353279, "reward_mean": 0.01171875, "format_reward_mean": 0.671875, "token_entropy": 1.0234375, "grad_norm": 0.263671875}
+{"step": 167, "n_empty": 0, "loss": -0.0027708951383829117, "reward_mean": 0.01171875, "format_reward_mean": 0.6328125, "token_entropy": 1.015625, "grad_norm": 0.51953125}
+{"step": 168, "n_empty": 0, "loss": -0.001881299540400505, "reward_mean": 0.0078125, "format_reward_mean": 0.62890625, "token_entropy": 1.09375, "grad_norm": 0.40234375}
+{"step": 169, "n_empty": 0, "loss": -0.013304093852639198, "reward_mean": 0.015625, "format_reward_mean": 0.6328125, "token_entropy": 1.0234375, "grad_norm": 0.361328125}
+{"step": 170, "val_reward": 0.01171875, "val_format_reward": 0.68359375, "val_length": 75.279296875, "n_empty": 0, "loss": -0.012499857693910599, "reward_mean": 0.02734375, "format_reward_mean": 0.6796875, "token_entropy": 0.9765625, "grad_norm": 0.5078125}
+{"step": 171, "n_empty": 0, "loss": -0.008958721533417702, "reward_mean": 0.0078125, "format_reward_mean": 0.65234375, "token_entropy": 1.0390625, "grad_norm": 0.3046875}
+{"step": 172, "n_empty": 0, "loss": -0.014570542611181736, "reward_mean": 0.0078125, "format_reward_mean": 0.71484375, "token_entropy": 1.0, "grad_norm": 0.310546875}
+{"step": 173, "n_empty": 0, "loss": -0.009726287797093391, "reward_mean": 0.0078125, "format_reward_mean": 0.7109375, "token_entropy": 0.98828125, "grad_norm": 0.349609375}
+{"step": 174, "n_empty": 0, "loss": 0.0, "reward_mean": 0.0, "format_reward_mean": 0.6328125, "token_entropy": 0.98046875, "grad_norm": 0.0}
+{"step": 175, "n_empty": 0, "loss": -0.01268746517598629, "reward_mean": 0.0078125, "format_reward_mean": 0.73046875, "token_entropy": 0.94921875, "grad_norm": 0.234375}
+{"step": 176, "n_empty": 0, "loss": -0.004670522175729275, "reward_mean": 0.00390625, "format_reward_mean": 0.68359375, "token_entropy": 1.0546875, "grad_norm": 0.2412109375}
+{"step": 177, "n_empty": 0, "loss": -0.015589444898068905, "reward_mean": 0.015625, "format_reward_mean": 0.6640625, "token_entropy": 0.9921875, "grad_norm": 0.2578125}
+{"step": 178, "n_empty": 0, "loss": -0.01956033706665039, "reward_mean": 0.015625, "format_reward_mean": 0.671875, "token_entropy": 0.9609375, "grad_norm": 0.373046875}
+{"step": 179, "n_empty": 0, "loss": -0.0044090161100029945, "reward_mean": 0.00390625, "format_reward_mean": 0.69140625, "token_entropy": 0.98828125, "grad_norm": 0.10791015625}
+{"step": 180, "val_reward": 0.017578125, "val_format_reward": 0.6591796875, "val_length": 76.890625, "n_empty": 0, "loss": -0.023414427414536476, "reward_mean": 0.0234375, "format_reward_mean": 0.65234375, "token_entropy": 0.95703125, "grad_norm": 0.54296875}
+{"step": 181, "n_empty": 0, "loss": -0.02804618701338768, "reward_mean": 0.02734375, "format_reward_mean": 0.65234375, "token_entropy": 0.98828125, "grad_norm": 0.5234375}
+{"step": 182, "n_empty": 0, "loss": -0.01185752172023058, "reward_mean": 0.015625, "format_reward_mean": 0.75390625, "token_entropy": 0.93359375, "grad_norm": 0.380859375}
+{"step": 183, "n_empty": 0, "loss": -0.010267486795783043, "reward_mean": 0.01953125, "format_reward_mean": 0.72265625, "token_entropy": 0.88671875, "grad_norm": 0.451171875}
+{"step": 184, "n_empty": 0, "loss": -0.006877422332763672, "reward_mean": 0.015625, "format_reward_mean": 0.703125, "token_entropy": 0.890625, "grad_norm": 0.37109375}
+{"step": 185, "n_empty": 0, "loss": -0.020041946321725845, "reward_mean": 0.0234375, "format_reward_mean": 0.7265625, "token_entropy": 0.95703125, "grad_norm": 0.51953125}
+{"step": 186, "n_empty": 0, "loss": -0.01522249635308981, "reward_mean": 0.02734375, "format_reward_mean": 0.73046875, "token_entropy": 0.88671875, "grad_norm": 0.4296875}
+{"step": 187, "n_empty": 0, "loss": -0.040105774998664856, "reward_mean": 0.02734375, "format_reward_mean": 0.6875, "token_entropy": 0.90625, "grad_norm": 0.6484375}
+{"step": 188, "n_empty": 0, "loss": -0.04020300880074501, "reward_mean": 0.02734375, "format_reward_mean": 0.69921875, "token_entropy": 0.90234375, "grad_norm": 0.55859375}
+{"step": 189, "n_empty": 0, "loss": -0.009329605847597122, "reward_mean": 0.01171875, "format_reward_mean": 0.71875, "token_entropy": 0.89453125, "grad_norm": 0.2431640625}
+{"step": 190, "val_reward": 0.0205078125, "val_format_reward": 0.72265625, "val_length": 76.474609375, "n_empty": 0, "loss": -0.004336102399975061, "reward_mean": 0.00390625, "format_reward_mean": 0.71484375, "token_entropy": 0.94140625, "grad_norm": 0.10400390625}
+{"step": 191, "n_empty": 0, "loss": 0.008472466841340065, "reward_mean": 0.015625, "format_reward_mean": 0.72265625, "token_entropy": 0.9453125, "grad_norm": 0.5703125}
+{"step": 192, "n_empty": 0, "loss": -0.04035215452313423, "reward_mean": 0.0390625, "format_reward_mean": 0.7109375, "token_entropy": 0.93359375, "grad_norm": 0.7265625}
+{"step": 193, "n_empty": 0, "loss": -0.028450969606637955, "reward_mean": 0.0390625, "format_reward_mean": 0.73046875, "token_entropy": 0.89453125, "grad_norm": 0.64453125}
+{"step": 194, "n_empty": 0, "loss": -0.026040799915790558, "reward_mean": 0.03125, "format_reward_mean": 0.6953125, "token_entropy": 0.921875, "grad_norm": 0.59375}
+{"step": 195, "n_empty": 0, "loss": -0.03533032909035683, "reward_mean": 0.0390625, "format_reward_mean": 0.734375, "token_entropy": 0.890625, "grad_norm": 0.77734375}
+{"step": 196, "n_empty": 0, "loss": -0.024882953613996506, "reward_mean": 0.0390625, "format_reward_mean": 0.73046875, "token_entropy": 0.84765625, "grad_norm": 0.5703125}
+{"step": 197, "n_empty": 0, "loss": -0.0021040833089500666, "reward_mean": 0.00390625, "format_reward_mean": 0.7109375, "token_entropy": 0.96875, "grad_norm": 0.404296875}
+{"step": 198, "n_empty": 0, "loss": -0.03150961175560951, "reward_mean": 0.03515625, "format_reward_mean": 0.72265625, "token_entropy": 0.96875, "grad_norm": 0.59375}
+{"step": 199, "n_empty": 0, "loss": -0.02559012919664383, "reward_mean": 0.01953125, "format_reward_mean": 0.70703125, "token_entropy": 0.9140625, "grad_norm": 0.453125}
+{"step": 200, "val_reward": 0.02734375, "val_format_reward": 0.7333984375, "val_length": 79.1376953125}

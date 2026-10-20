@@ -44,7 +44,43 @@ What the curves show:
 - Likely cause of the short-answer pull: the per-sequence 1/|o| normalization gives a short correct
   answer a larger per-token update — the length bias Dr. GRPO removes (next experiment).
 
-The handout target (≥ 25 % averaged over seeds) is not met at 200 steps. Next: longer runs and a learning-rate sweep.
+The handout target (≥ 25 % averaged over seeds) is not met at 200 steps. With the 3-shot prompt it is (48 %, below).
+
+### Learning-rate sweep (r1_zero, 2 seeds per rate; 1e-5 = the 4 seeds above)
+
+| learning rate | final val accuracy | best during run | behaviour |
+|---|---|---|---|
+| 3e-6 | 2.7 %, 5.4 % | same | too slow — still learning the format at step 200 |
+| **1e-5** | 6–43 % (mean 19.9 %) | 44 % | stable, high seed variance |
+| 3e-5 | 0 %, 0 % | 31 %, **49 %** | learns fastest, then collapses (gibberish / format drift) |
+| 1e-4 | 0 %, 0 % | 3 % | diverges within 30 steps (repetition, no reward) |
+
+![learning-rate sweep](results/grpo_lr_sweep.png)
+
+Collapse is an absorbing state: `r1_zero_reward_fn` requires the exact string `</think> <answer>`.
+At lr 3e-5 one run still answers correctly at the end but writes `</think>\n\n <answer>` — every rollout
+scores 0, every group advantage is 0, the gradient is exactly 0, and nothing can pull the policy back.
+For a fixed 200-step budget 1e-5 is best; 3e-5 would need early stopping or a decaying rate.
+Curves: [`results/grpo_lr_curves.png`](results/grpo_lr_curves.png).
+
+### Prompt ablation (lr 1e-5)
+
+| prompt | seeds | step 0 | final val accuracy | mean ± sd |
+|---|---|---|---|---|
+| r1_zero | 4 | 0 % | 6, 18, 13, 43 % | 19.9 ± 16.0 % |
+| question_only | 3 | 0 % | 37, 34, 38 % | 36.4 ± 2.2 % |
+| **r1_zero, 3-shot** | 3 | 21 % | 47, 49, 49 % | **48.1 ± 0.8 %** |
+
+![prompt ablation](results/grpo_prompt_ablation.png)
+
+- **3-shot is best and nearly deterministic.** The worked examples teach the format *and* show reasoning,
+  so there is no short-answer phase: length stays ~125 tokens, accuracy climbs 21 → 45 % in 40 steps and plateaus.
+- **question_only** has no tags to shortcut, so no length collapse (150–280 tokens); entropy starts high (~2.2 nats)
+  and falls slowly; all seeds learn, from step ~75–100. (Graded with `question_only_reward_fn`, which accepts any
+  extractable answer — accuracy is comparable across prompts, format reward is not.)
+- **r1_zero** alone gives the model a format it can satisfy by guessing — the cause of the collapse and the variance.
+
+Curves: [`results/grpo_prompt_curves.png`](results/grpo_prompt_curves.png).
 
 ### Prompting baselines
 
@@ -83,9 +119,9 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | `grpo_train.py` | GRPO training loop: policy on GPU 0, vLLM on GPU 1; `python grpo_train.py <seed> [lr] [prompt]` → `results/grpo_seed<seed>.jsonl` (default) or `results/grpo_<prompt>_lr<lr>_seed<seed>.jsonl` (+ `_rollouts.jsonl`) |
 | `run_seeds.sh` | submit the 4-seed runs (seeds 0–3) |
 | `run_lr.sh`, `plot_lr.py` | learning-rate sweep (3e-6, 3e-5, 1e-4 × 2 seeds) → final val accuracy vs lr |
-| `run_prompts.sh` | prompt ablation: question_only and r1_zero 3-shot × 3 seeds |
+| `run_prompts.sh`, `plot_prompts.py` | prompt ablation: question_only and r1_zero 3-shot × 3 seeds → final accuracy per prompt |
 | `plot_grpo.py` | train / val reward and format reward vs step from one run log |
-| `plot_seeds.py` | 8 metrics (val/train reward, format, length, entropy, loss, grad norm) for several runs → `results/grpo_seeds.png` |
+| `plot_seeds.py` | 8 metrics (val/train reward, format, length, entropy, loss, grad norm) for several runs: `python plot_seeds.py [out.png] <logs>` |
 | `prompting_baselines.py` | generate answers for the three prompts (GPU) → `results/<prompt>.jsonl` |
 | `grade_baselines.py` | grade with the Dr. GRPO grader, count categories → `results/<prompt>.graded.jsonl` |
 | `inspect_baselines.py` | print random category-2 / category-3 examples for reading |

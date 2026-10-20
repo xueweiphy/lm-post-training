@@ -1,8 +1,10 @@
 import json, sys
 import matplotlib.pyplot as plt
 
-# usage: python plot_seeds.py results/grpo_seed0.jsonl results/grpo_seed1.jsonl ...
-files = sys.argv[1:] or [f"results/grpo_seed{s}.jsonl" for s in range(4)]
+# usage: python plot_seeds.py [out.png] results/grpo_seed0.jsonl results/grpo_seed1.jsonl ...
+args = sys.argv[1:]
+out = args.pop(0) if args and args[0].endswith(".png") else "results/grpo_seeds.png"
+files = [f for f in args if "rollouts" not in f] or [f"results/grpo_seed{s}.jsonl" for s in range(4)]
 colors = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
 panels = [("val_reward", "val accuracy"), ("val_format_reward", "val format reward"), ("val_length", "val response length (tokens)"),
           ("reward_mean", "train reward"), ("format_reward_mean", "train format reward"), ("token_entropy", "token entropy (nats)"),
@@ -18,7 +20,7 @@ for ax, (key, title) in zip(axes.flat, panels):
         x = [r["step"] for r in recs if key in r]
         y = [r[key] for r in recs if key in r]
         if not y: continue
-        label = file.split("/")[-1].replace("grpo_", "").replace(".jsonl", "")
+        label = file.split("/")[-1].replace("grpo_", "").replace(".jsonl", "").replace("r1_zero_three_shot_gsm8k", "3shot")
         if key.startswith("val_"):
             ax.plot(x, y, color=c, lw=2, marker="o", ms=3, label=label)
         else:
@@ -27,6 +29,5 @@ for ax, (key, title) in zip(axes.flat, panels):
     ax.set_title(title); ax.set_xlabel("step"); ax.grid(alpha=0.3)
 axes[0, 0].legend()
 plt.tight_layout()
-out = "results/grpo_seeds.png"
 plt.savefig(out, dpi=130)
 print("saved", out)
