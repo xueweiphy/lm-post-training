@@ -9,6 +9,7 @@ __pycache__/
 logs/
 results/*.jsonl
 !results/*.graded.jsonl
+!results/grpo_seed*.jsonl
 inspect.txt
 wandb/
 
