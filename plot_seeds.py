@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 # usage: python plot_seeds.py results/grpo_seed0.jsonl results/grpo_seed1.jsonl ...
 files = sys.argv[1:] or [f"results/grpo_seed{s}.jsonl" for s in range(4)]
-colors = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4"]
+colors = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
 panels = [("val_reward", "val accuracy"), ("val_format_reward", "val format reward"), ("val_length", "val response length (tokens)"),
           ("reward_mean", "train reward"), ("format_reward_mean", "train format reward"), ("token_entropy", "token entropy (nats)"),
           ("loss", "loss"), ("grad_norm", "grad norm (before clip)")]

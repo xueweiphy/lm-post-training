@@ -1,18 +1,23 @@
 import json
+import os
 import random
 import sys
 import torch
 from vllm_utils import VLLMServer
 from checkpoint import get_model_and_tokenizer
 from grpo import grpo_train_step
-from drgrpo_grader import r1_zero_reward_fn
+from drgrpo_grader import r1_zero_reward_fn, question_only_reward_fn
 
+# usage: python grpo_train.py <seed> [learning_rate] [prompt]
+#   python grpo_train.py 2                       -> seed 2, lr 1e-5, r1_zero
+#   python grpo_train.py 0 3e-5                  -> learning-rate sweep
+#   python grpo_train.py 0 1e-5 question_only    -> prompt ablation
 # hyperparameters (handout §4.3)
-seed = int(sys.argv[1]) if len(sys.argv) > 1 else 0   # python grpo_train.py 2
+seed = int(sys.argv[1]) if len(sys.argv) > 1 else 0
 n_train_examples = 6400
 n_val_examples = 1024
 num_rollout_steps = 200
-learning_rate = 1e-5
+learning_rate = float(sys.argv[2]) if len(sys.argv) > 2 else 1e-5
 rollout_batch_size = train_batch_size = 256
 group_size = 8
 gradient_accumulation_steps = 32
@@ -27,7 +32,8 @@ torch.manual_seed(seed)
 
 # data load and prompt generated
 file ="data/gsm8k/train.jsonl"
-prompt = "r1_zero.prompt"
+prompt = (sys.argv[3] if len(sys.argv) > 3 else "r1_zero") + ".prompt"   # r1_zero, question_only, r1_zero_three_shot_gsm8k
+reward_fn = question_only_reward_fn if prompt == "question_only.prompt" else r1_zero_reward_fn
 filepath  = "prompts/"
 file_val = "data/gsm8k/test.jsonl"
 
@@ -57,7 +63,7 @@ def evaluate(server, prompts, answers, params) :
     rewards = []
     format_rewards= []
     for rr, tt in zip(rollout_responses, answers ):
-        dic = r1_zero_reward_fn (rr, tt)
+        dic = reward_fn (rr, tt)
         rewards.append(dic["reward"])
         format_rewards.append(dic["format_reward"])
     rewards = torch.tensor(rewards)
@@ -71,17 +77,24 @@ print ( len ( promptlist ), len (  promptlist_val ))
 # model, optimizer, vLLM
 model, tokenizer = get_model_and_tokenizer(model_id, device)
 optimizer = torch.optim.AdamW ( model.parameters(), lr = learning_rate, betas = ( 0.9, 0.95 ) , weight_decay = 0.0 )
-server = VLLMServer ( model_id, gpu=1, port=8000 + seed)   # own port: seeds may share a node
+port = 8000 + int(os.environ.get("SLURM_JOB_ID", seed)) % 1000      # own port: jobs may share a node
+server = VLLMServer ( model_id, gpu=1, port=port)
 server.start ()
 server.init_weight_sync(device)
-params = {"temperature": sampling_temperature, "max_tokens" : sampling_max_tokens, "n": 1, "seed": None,
-            "stop": ["</answer>"], "include_stop_str_in_output": True}
+params = {"temperature": sampling_temperature, "max_tokens" : sampling_max_tokens, "n": 1, "seed": None}
+if prompt != "question_only.prompt":                   # r1_zero prompts end at </answer>
+    params |= {"stop": ["</answer>"], "include_stop_str_in_output": True}
 
 n_prompts = rollout_batch_size // group_size
 
 # training loop
-f = open(f"results/grpo_seed{seed}.jsonl", "w")
-g = open(f"results/grpo_seed{seed}_rollouts.jsonl", "w")
+# default run keeps the old name; sweeps get the lr and prompt in the name
+if learning_rate == 1e-5 and prompt == "r1_zero.prompt":
+    name = f"grpo_seed{seed}"
+else:
+    name = f"grpo_{prompt[:-7]}_lr{learning_rate:g}_seed{seed}"
+f = open(f"results/{name}.jsonl", "w")
+g = open(f"results/{name}_rollouts.jsonl", "w")
 
 for step in range(num_rollout_steps):
 
@@ -104,7 +117,7 @@ for step in range(num_rollout_steps):
     loss, meta = grpo_train_step(model, tokenizer, optimizer,
                         gradient_accumulation_steps=gradient_accumulation_steps,
                         max_grad_norm=max_grad_norm,
-                        reward_fn=r1_zero_reward_fn,
+                        reward_fn=reward_fn,
                         repeated_prompts=repeated_prompts,
                         rollout_responses=rollout_responses,
                         repeated_ground_truths=repeated_ground_truths,
@@ -117,7 +130,7 @@ for step in range(num_rollout_steps):
     if step % 40 == 0 or step == num_rollout_steps - 1:  # first group of 8: one question
         for rr, tt in zip(rollout_responses[:group_size], repeated_ground_truths[:group_size]):
             g.write(json.dumps({"step": step, "prompt": repeated_prompts[0], "response": rr,
-                                "gt": tt} | r1_zero_reward_fn(rr, tt)) + "\n")
+                                "gt": tt} | reward_fn(rr, tt)) + "\n")
         g.flush()
     rec = rec | meta
     f.write ( json.dumps ( rec ) +"\n"  )

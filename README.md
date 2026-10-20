@@ -80,8 +80,10 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | file | what |
 |---|---|
 | `grpo.py` | the GRPO components (table above) |
-| `grpo_train.py` | GRPO training loop: policy on GPU 0, vLLM on GPU 1; `python grpo_train.py <seed>` → `results/grpo_seed<seed>.jsonl` (+ `_rollouts.jsonl`) |
+| `grpo_train.py` | GRPO training loop: policy on GPU 0, vLLM on GPU 1; `python grpo_train.py <seed> [lr] [prompt]` → `results/grpo_seed<seed>.jsonl` (default) or `results/grpo_<prompt>_lr<lr>_seed<seed>.jsonl` (+ `_rollouts.jsonl`) |
 | `run_seeds.sh` | submit the 4-seed runs (seeds 0–3) |
+| `run_lr.sh`, `plot_lr.py` | learning-rate sweep (3e-6, 3e-5, 1e-4 × 2 seeds) → final val accuracy vs lr |
+| `run_prompts.sh` | prompt ablation: question_only and r1_zero 3-shot × 3 seeds |
 | `plot_grpo.py` | train / val reward and format reward vs step from one run log |
 | `plot_seeds.py` | 8 metrics (val/train reward, format, length, entropy, loss, grad norm) for several runs → `results/grpo_seeds.png` |
 | `prompting_baselines.py` | generate answers for the three prompts (GPU) → `results/<prompt>.jsonl` |
@@ -103,6 +105,7 @@ sbatch run_gpu.sh prompting_baselines.py     # generation (GPU)
 uv run python grade_baselines.py             # grading (no GPU)
 ./run_seeds.sh                               # GRPO, 4 seeds (2 GPUs each)
 python plot_seeds.py                         # plots from results/grpo_seed0..3.jsonl
+./run_lr.sh && ./run_prompts.sh              # learning-rate sweep, prompt ablation
 ```
 
 ## Credits
