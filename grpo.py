@@ -130,14 +130,18 @@ def grpo_train_step(model: PreTrainedModel, tokenizer: PreTrainedTokenizer,
     
     microbatch_size = len(inputs) // gradient_accumulation_steps
     total = 0.0
+    S_total = 0.0 
     for i in range(0, len(inputs), microbatch_size):
         inputs_microbatch = inputs[i:i+microbatch_size]
         labels_microbatch = labels[i:i+microbatch_size]
         mask_microbatch = mask[i:i+microbatch_size]
         adv_microbatch = adv[i:i+microbatch_size]
 
-        dic0  = get_response_log_probs ( model, inputs_microbatch, labels_microbatch )
+        dic0  = get_response_log_probs ( model, inputs_microbatch, labels_microbatch, 
+                                        return_token_entropy=True )
         logprobs = dic0["log_probs"]
+        ent = dic0["token_entropy"].detach()
+        S_total += (ent * mask_microbatch).sum() / mask_microbatch.sum().clamp(min=1) / gradient_accumulation_steps
 
         grad_loss, _ = compute_policy_gradient_loss(adv_microbatch, logprobs, importance_reweighting_method, 
                                                     old_log_probs, cliprange, mask_microbatch)
@@ -148,6 +152,7 @@ def grpo_train_step(model: PreTrainedModel, tokenizer: PreTrainedTokenizer,
 
         loss.backward()
 
+    meta["token_entropy"] = S_total.item()
     if max_grad_norm is not None:
         meta["grad_norm"] = torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm).item()
     if torch.isfinite(torch.tensor(meta.get("grad_norm", 0.0))):

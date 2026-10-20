@@ -44,7 +44,9 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | file | what |
 |---|---|
 | `grpo.py` | the GRPO components (table above) |
-| `grpo_train.py` | GRPO training loop: policy on GPU 0, vLLM on GPU 1 → `results/grpo_seed<seed>.jsonl` |
+| `grpo_train.py` | GRPO training loop: policy on GPU 0, vLLM on GPU 1; `python grpo_train.py <seed>` → `results/grpo_seed<seed>.jsonl` (+ `_rollouts.jsonl`) |
+| `run_seeds.sh` | submit the 4-seed runs (seeds 0–3) |
+| `plot_grpo.py` | train / val reward and format reward vs step from a run log |
 | `prompting_baselines.py` | generate answers for the three prompts (GPU) → `results/<prompt>.jsonl` |
 | `grade_baselines.py` | grade with the Dr. GRPO grader, count categories → `results/<prompt>.graded.jsonl` |
 | `inspect_baselines.py` | print random category-2 / category-3 examples for reading |
@@ -61,7 +63,7 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 uv sync --extra gpu                          # on a GPU node, once
 sbatch run_gpu.sh prompting_baselines.py     # generation (GPU)
 uv run python grade_baselines.py             # grading (no GPU)
-sbatch -p hpg-b200 --gres=gpu:b200:2 --time=03:00:00 run_gpu.sh grpo_train.py   # GRPO (2 GPUs)
+./run_seeds.sh                               # GRPO, 4 seeds (2 GPUs each)
 ```
 
 ## Credits

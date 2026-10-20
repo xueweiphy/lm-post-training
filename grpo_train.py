@@ -1,5 +1,6 @@
 import json
 import random
+import sys
 import torch
 from vllm_utils import VLLMServer
 from checkpoint import get_model_and_tokenizer
@@ -7,7 +8,7 @@ from grpo import grpo_train_step
 from drgrpo_grader import r1_zero_reward_fn
 
 # hyperparameters (handout §4.3)
-seed = 0
+seed = int(sys.argv[1]) if len(sys.argv) > 1 else 0   # python grpo_train.py 2
 n_train_examples = 6400
 n_val_examples = 1024
 num_rollout_steps = 200
@@ -70,7 +71,7 @@ print ( len ( promptlist ), len (  promptlist_val ))
 # model, optimizer, vLLM
 model, tokenizer = get_model_and_tokenizer(model_id, device)
 optimizer = torch.optim.AdamW ( model.parameters(), lr = learning_rate, betas = ( 0.9, 0.95 ) , weight_decay = 0.0 )
-server = VLLMServer ( model_id, gpu=1)
+server = VLLMServer ( model_id, gpu=1, port=8000 + seed)   # own port: seeds may share a node
 server.start ()
 server.init_weight_sync(device)
 params = {"temperature": sampling_temperature, "max_tokens" : sampling_max_tokens, "n": 1, "seed": None,
@@ -80,6 +81,7 @@ n_prompts = rollout_batch_size // group_size
 
 # training loop
 f = open(f"results/grpo_seed{seed}.jsonl", "w")
+g = open(f"results/grpo_seed{seed}_rollouts.jsonl", "w")
 
 for step in range(num_rollout_steps):
 
@@ -112,6 +114,11 @@ for step in range(num_rollout_steps):
         json.dump({"responses": rollout_responses, "gt": repeated_ground_truths},
                   open(f"results/nan_step{step}.json", "w"))
     rec["loss"] = loss.item()
+    if step % 40 == 0 or step == num_rollout_steps - 1:  # first group of 8: one question
+        for rr, tt in zip(rollout_responses[:group_size], repeated_ground_truths[:group_size]):
+            g.write(json.dumps({"step": step, "prompt": repeated_prompts[0], "response": rr,
+                                "gt": tt} | r1_zero_reward_fn(rr, tt)) + "\n")
+        g.flush()
     rec = rec | meta
     f.write ( json.dumps ( rec ) +"\n"  )
     f.flush()
@@ -123,4 +130,5 @@ f.write(json.dumps({"step": num_rollout_steps, "val_reward": rw,
                     "val_format_reward": rw_format, "val_length": val_len}) + "\n")
 print("final",rw, rw_format, val_len)
 f.close()
+g.close()
 server.stop()
