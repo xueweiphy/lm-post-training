@@ -95,9 +95,23 @@ zero-shot, then SFT and DPO it. First benchmark: MMLU (14,042 test questions, 57
 
 | benchmark | accuracy | failed parses | throughput |
 |---|---|---|---|
-| MMLU (zero-shot, base model) | — | — | — |
+| MMLU (zero-shot, base model) | **57.9 %** (8,138 / 14,042) | 36 (0.26 %) | 164 examples/s (85.6 s, one GPU, greedy) |
 
-(Run pending.)
+Meta reports ~66 % for this model, but 5-shot and scored by comparing the probabilities of A–D;
+zero-shot generate-and-parse is the harder setting.
+
+- **Failed parses (36)** cluster in long-passage subjects (US/world/European history, professional law).
+  25 answer with the *option text* instead of the letter ("…was universal male suffrage."), 3 give the
+  letter in another form ("… is B. the Balkan Question …"), 8 ramble — copy the question, continue the
+  passage or write a numbered essay — until the 128-token limit. Mapping option text back to its letter
+  would rescue 17 of them as correct (+0.1 %).
+- **Wrong answers (5,868)**: the model answers in one line with no reasoning (median reply 30 characters),
+  so subjects that need computation are weakest (college / high-school mathematics 32–37 %, abstract
+  algebra 34 %) and memorised-knowledge subjects strongest (marketing 83 %, US foreign policy 82 %).
+  Moral scenarios is *below* chance (24 %): all 3 moral-scenario questions among 10 random wrong
+  answers got "B. Wrong, Not wrong". Negated questions ("EXCEPT", "cannot be", "not a complication") are often answered as if
+  un-negated — 3 of the 10. There is a letter bias: B is predicted 31 % of the time vs 25 % in the gold
+  answers, and accuracy is 65 % when the answer is B vs 52 % when it is A.
 
 ### Prompting baselines
 
