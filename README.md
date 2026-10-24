@@ -82,6 +82,23 @@ Curves: [`results/grpo_lr_curves.png`](results/grpo_lr_curves.png).
 
 Curves: [`results/grpo_prompt_curves.png`](results/grpo_prompt_curves.png).
 
+### Supplement: zero-shot Llama 3.1 8B (instruction tuning / safety track)
+
+The A5 supplement moves from reasoning RL to instruction tuning: measure the **base** Llama 3.1 8B
+zero-shot, then SFT and DPO it. First benchmark: MMLU (14,042 test questions, 57 subjects).
+
+- Prompt: the MMLU task prompt ("Respond with … 'The correct answer is _'") placed inside a generic
+  zero-shot system prompt that frames the text as an assistant conversation (`# Query:` / `# Answer:`);
+  greedy decoding, 128 tokens max, stop at the next `# Query:`.
+- Scoring: `mmlu.py` parses the reply into a letter. It is deliberately strict — the text after "The correct answer is", up to the first period, must
+  be a single option letter (or "(B)") — so hedged replies ("B or C") count as failed parses, not as guesses.
+
+| benchmark | accuracy | failed parses | throughput |
+|---|---|---|---|
+| MMLU (zero-shot, base model) | — | — | — |
+
+(Run pending.)
+
 ### Prompting baselines
 
 Prompting baselines, OLMo-2-0425-1B, GSM8K test (1319 questions), temperature 1.0, top-p 1.0, max 512 tokens:
@@ -126,10 +143,12 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | `grade_baselines.py` | grade with the Dr. GRPO grader, count categories → `results/<prompt>.graded.jsonl` |
 | `inspect_baselines.py` | print random category-2 / category-3 examples for reading |
 | `check_greedy.py` | greedy 3-shot sanity check on 100 questions |
+| `mmlu.py` | parse an MMLU reply into the answer letter (strict: "The correct answer is B" → B; anything else in that sentence → None) |
+| `mmlu_baseline.py` | zero-shot MMLU for Llama 3.1 8B: load → prompt → greedy vLLM → parse → `results/mmlu_baseline.jsonl` |
 | `run_gpu.sh` | Slurm job: `sbatch run_gpu.sh <script.py> [args]` |
 | `push.sh`, `pull.sh` | copy files Mac ↔ HiPerGator |
-| `drgrpo_grader.py`, `vllm_utils.py`, `checkpoint.py`, `prompts/` | grader, vLLM server + weight sync, model loading, prompts — course starter code, unchanged |
-| `data/gsm8k/` | GSM8K train / test |
+| `drgrpo_grader.py`, `vllm_utils.py`, `checkpoint.py`, `prompts/`, `prompts_safety/` | grader, vLLM server + weight sync, model loading, prompts — course starter code, unchanged |
+| `data/gsm8k/`, `data/mmlu/test/` | GSM8K train / test; MMLU test (57 subject CSVs) |
 | `results/*.graded.jsonl` | the graded baseline outputs behind the baseline table |
 | `results/grpo_seed*.jsonl` | GRPO run logs (one line per step) and rollout samples (`_rollouts.jsonl`, every 40 steps) |
 
@@ -142,6 +161,7 @@ uv run python grade_baselines.py             # grading (no GPU)
 ./run_seeds.sh                               # GRPO, 4 seeds (2 GPUs each)
 python plot_seeds.py                         # plots from results/grpo_seed0..3.jsonl
 ./run_lr.sh && ./run_prompts.sh              # learning-rate sweep, prompt ablation
+sbatch run_gpu.sh mmlu_baseline.py           # zero-shot MMLU, Llama 3.1 8B (needs HF_TOKEN + Meta licence)
 ```
 
 ## Credits
