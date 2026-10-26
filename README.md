@@ -97,7 +97,7 @@ zero-shot, then SFT and DPO it. First benchmark: MMLU (14,042 test questions, 57
 |---|---|---|---|
 | MMLU (zero-shot, base model) | **57.9 %** (8,138 / 14,042) | 36 (0.26 %) | 164 examples/s (85.6 s, one GPU, greedy) |
 | GSM8K (zero-shot, base model; last number in the reply) | **15.4 %** (203 / 1,319) | 7 (0.5 %) | 78.5 examples/s (16.8 s, one GPU, greedy) |
-| AlpacaEval (zero-shot, base model; win rate vs GPT-4 Turbo, judge Llama 3.3 70B) | — | — | — |
+| AlpacaEval (zero-shot, base model; win rate vs GPT-4 Turbo, judge Llama 3.3 70B) | — (judge pending) | — | 14.9 examples/s (53.9 s, one GPU, greedy, up to 2048 tokens) |
 
 Meta reports ~66 % for this model, but 5-shot and scored by comparing the probabilities of A–D;
 zero-shot generate-and-parse is the harder setting.
