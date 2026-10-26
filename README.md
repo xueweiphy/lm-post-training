@@ -96,7 +96,8 @@ zero-shot, then SFT and DPO it. First benchmark: MMLU (14,042 test questions, 57
 | benchmark | accuracy | failed parses | throughput |
 |---|---|---|---|
 | MMLU (zero-shot, base model) | **57.9 %** (8,138 / 14,042) | 36 (0.26 %) | 164 examples/s (85.6 s, one GPU, greedy) |
-| GSM8K (zero-shot, base model; last number in the reply) | **15.4 %** (203 / 1,319) | 7 (0.5 %) | (see job log) |
+| GSM8K (zero-shot, base model; last number in the reply) | **15.4 %** (203 / 1,319) | 7 (0.5 %) | 78.5 examples/s (16.8 s, one GPU, greedy) |
+| AlpacaEval (zero-shot, base model; win rate vs GPT-4 Turbo, judge Llama 3.3 70B) | — | — | — |
 
 Meta reports ~66 % for this model, but 5-shot and scored by comparing the probabilities of A–D;
 zero-shot generate-and-parse is the harder setting.
@@ -169,11 +170,12 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | `check_greedy.py` | greedy 3-shot sanity check on 100 questions |
 | `mmlu.py` | parse an MMLU reply into the answer letter (strict: "The correct answer is B" → B; anything else in that sentence → None) |
 | `gsm8k.py`, `gsm8k_baseline.py` | GSM8K parser (last number in the reply) and zero-shot script, same pipeline as MMLU, 512 tokens → `results/gsm8k_baseline.jsonl` |
+| `alpaca_eval_baseline.py` | zero-shot AlpacaEval outputs (805 instructions, greedy, 2048 tokens) → `results/alpaca_eval_baseline.json` for the `alpaca_eval` judge |
 | `mmlu_baseline.py` | zero-shot MMLU for Llama 3.1 8B: load → prompt → greedy vLLM → parse → `results/mmlu_baseline.jsonl` |
 | `run_gpu.sh` | Slurm job: `sbatch run_gpu.sh <script.py> [args]` |
 | `push.sh`, `pull.sh` | copy files Mac ↔ HiPerGator |
 | `drgrpo_grader.py`, `vllm_utils.py`, `checkpoint.py`, `prompts/`, `prompts_safety/` | grader, vLLM server + weight sync, model loading, prompts — course starter code, unchanged |
-| `data/gsm8k/`, `data/mmlu/test/` | GSM8K train / test; MMLU test (57 subject CSVs) |
+| `data/gsm8k/`, `data/mmlu/test/`, `data/alpaca_eval/` | GSM8K train / test; MMLU test (57 subject CSVs); AlpacaEval instructions with GPT-4 Turbo reference outputs |
 | `results/*.graded.jsonl` | the graded baseline outputs behind the baseline table |
 | `results/grpo_seed*.jsonl` | GRPO run logs (one line per step) and rollout samples (`_rollouts.jsonl`, every 40 steps) |
 
@@ -188,6 +190,7 @@ python plot_seeds.py                         # plots from results/grpo_seed0..3.
 ./run_lr.sh && ./run_prompts.sh              # learning-rate sweep, prompt ablation
 sbatch run_gpu.sh mmlu_baseline.py           # zero-shot MMLU, Llama 3.1 8B (needs HF_TOKEN + Meta licence)
 sbatch run_gpu.sh gsm8k_baseline.py          # zero-shot GSM8K, same model
+sbatch run_gpu.sh alpaca_eval_baseline.py    # zero-shot AlpacaEval outputs (judge step separate)
 ```
 
 ## Credits
