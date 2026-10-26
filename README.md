@@ -97,7 +97,7 @@ zero-shot, then SFT and DPO it. First benchmark: MMLU (14,042 test questions, 57
 |---|---|---|---|
 | MMLU (zero-shot, base model) | **57.9 %** (8,138 / 14,042) | 36 (0.26 %) | 164 examples/s (85.6 s, one GPU, greedy) |
 | GSM8K (zero-shot, base model; last number in the reply) | **15.4 %** (203 / 1,319) | 7 (0.5 %) | 78.5 examples/s (16.8 s, one GPU, greedy) |
-| AlpacaEval (zero-shot, base model; win rate vs GPT-4 Turbo, judge Llama 3.3 70B) | — (judge pending) | — | 14.9 examples/s (53.9 s, one GPU, greedy, up to 2048 tokens) |
+| AlpacaEval (zero-shot, base model; win rate vs GPT-4 Turbo, judge Llama 3.3 70B) | **1.7 %** win rate (13 wins, 2 draws, 790 losses); length-controlled **1.7 %** | 7 empty outputs | 14.9 examples/s (53.9 s, one GPU, greedy, up to 2048 tokens) |
 
 Meta reports ~66 % for this model, but 5-shot and scored by comparing the probabilities of A–D;
 zero-shot generate-and-parse is the harder setting.
@@ -123,6 +123,16 @@ zero-shot generate-and-parse is the harder setting.
   schools → 54 books, never divides by 3), arithmetic slips (5 % growth on $120 for 3 years → "$150"), and
   parser artifacts (Fern's widget answer "$1,080 … for a month with 30 days" parses as 30; the gold is 64,800). The gold number
   appears somewhere in only 62 of the 1,109 wrong replies, so a smarter parser would not change the picture.
+
+- **AlpacaEval (1.7 % win rate, 1.7 % length-controlled)**: the judge prefers GPT-4 Turbo on 790 of 805
+  instructions. The base model's answers are short and generic — they open with a definition and often never
+  answer the actual question ("can stainless steel be magnetic?" gets a paragraph on what stainless steel is,
+  no "yes"; "is JavaScript front end or back end?" says client-side only, missing Node.js) — while GPT-4 Turbo
+  gives structured, multi-section answers. Length control barely moves the number, so the gap is quality, not
+  length. The 13 wins are short factual questions (Indonesia, AK-47, isotropic antennas) or cases where the
+  reference itself is degenerate (the emoji task, where GPT-4 Turbo's reply is 5 characters). One win is a
+  judge mistake: "How many days until Christmas?" is answered with an invented current date ("It is currently
+  2022-12-01 … 24 days").
 
 ### Prompting baselines
 
@@ -170,6 +180,7 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | `check_greedy.py` | greedy 3-shot sanity check on 100 questions |
 | `mmlu.py` | parse an MMLU reply into the answer letter (strict: "The correct answer is B" → B; anything else in that sentence → None) |
 | `gsm8k.py`, `gsm8k_baseline.py` | GSM8K parser (last number in the reply) and zero-shot script, same pipeline as MMLU, 512 tokens → `results/gsm8k_baseline.jsonl` |
+| `run_judge.sh`, `scripts/alpaca_eval_vllm_llama3_3_70b_fn/` | AlpacaEval judge: Llama 3.3 70B Instruct on 2 GPUs (course config, model path → Hugging Face) → `results/leaderboard.csv`, `results/annotations.json` |
 | `alpaca_eval_baseline.py` | zero-shot AlpacaEval outputs (805 instructions, greedy, 2048 tokens) → `results/alpaca_eval_baseline.json` for the `alpaca_eval` judge |
 | `mmlu_baseline.py` | zero-shot MMLU for Llama 3.1 8B: load → prompt → greedy vLLM → parse → `results/mmlu_baseline.jsonl` |
 | `run_gpu.sh` | Slurm job: `sbatch run_gpu.sh <script.py> [args]` |
@@ -190,7 +201,8 @@ python plot_seeds.py                         # plots from results/grpo_seed0..3.
 ./run_lr.sh && ./run_prompts.sh              # learning-rate sweep, prompt ablation
 sbatch run_gpu.sh mmlu_baseline.py           # zero-shot MMLU, Llama 3.1 8B (needs HF_TOKEN + Meta licence)
 sbatch run_gpu.sh gsm8k_baseline.py          # zero-shot GSM8K, same model
-sbatch run_gpu.sh alpaca_eval_baseline.py    # zero-shot AlpacaEval outputs (judge step separate)
+sbatch run_gpu.sh alpaca_eval_baseline.py    # zero-shot AlpacaEval outputs
+sbatch run_judge.sh results/alpaca_eval_baseline.json   # win rate vs GPT-4 Turbo (2 GPUs, Llama 3.3 70B judge)
 ```
 
 ## Credits
