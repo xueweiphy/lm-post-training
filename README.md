@@ -96,7 +96,7 @@ zero-shot, then SFT and DPO it. First benchmark: MMLU (14,042 test questions, 57
 | benchmark | accuracy | failed parses | throughput |
 |---|---|---|---|
 | MMLU (zero-shot, base model) | **57.9 %** (8,138 / 14,042) | 36 (0.26 %) | 164 examples/s (85.6 s, one GPU, greedy) |
-| GSM8K (zero-shot, base model; last number in the reply) | — | — | — |
+| GSM8K (zero-shot, base model; last number in the reply) | **15.4 %** (203 / 1,319) | 7 (0.5 %) | (see job log) |
 
 Meta reports ~66 % for this model, but 5-shot and scored by comparing the probabilities of A–D;
 zero-shot generate-and-parse is the harder setting.
@@ -113,6 +113,15 @@ zero-shot generate-and-parse is the harder setting.
   answers got "B. Wrong, Not wrong". Negated questions ("EXCEPT", "cannot be", "not a complication") are often answered as if
   un-negated — 3 of the 10. There is a letter bias: B is predicted 31 % of the time vs 25 % in the gold
   answers, and accuracy is 65 % when the answer is B vs 52 % when it is A.
+
+- **GSM8K (15.4 %)**: the base model often does not answer at all — **30 % of replies (399) just repeat the
+  question** and stop, so the "last number" rule picks the last number *of the question* (19 of them are right
+  by coincidence). Replies that are not echoes score 20 %; replies that show arithmetic ("… = 11") score 29 %
+  vs 15 % for bare one-line answers. The 7 failed parses are echoes of questions whose numbers are spelled
+  out ("Dolly has two books …"). Wrong answers otherwise come from skipped steps (Bob's $27,000 for 3
+  schools → 54 books, never divides by 3), arithmetic slips (5 % growth on $120 for 3 years → "$150"), and
+  parser artifacts (Fern's widget answer "$1,080 … for a month with 30 days" parses as 30; the gold is 64,800). The gold number
+  appears somewhere in only 62 of the 1,109 wrong replies, so a smarter parser would not change the picture.
 
 ### Prompting baselines
 
