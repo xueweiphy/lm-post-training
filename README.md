@@ -187,6 +187,7 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | `sst_baseline.py`, `run_safety.sh`, `scripts/evaluate_safety.py` | SimpleSafetyTests: 100 harmful requests → `results/sst_baseline.jsonl`; the course evaluator (Llama 3.3 70B, 2 GPUs) marks each reply safe / unsafe → `results/sst_baseline_judged.jsonl` |
 | `alpaca_eval_baseline.py` | zero-shot AlpacaEval outputs (805 instructions, greedy, 2048 tokens) → `results/alpaca_eval_baseline.json` for the `alpaca_eval` judge |
 | `mmlu_baseline.py` | zero-shot MMLU for Llama 3.1 8B: load → prompt → greedy vLLM → parse → `results/mmlu_baseline.jsonl` |
+| `sft_data.py` | SFT data loader: Alpaca-format each prompt/response, join with `<|end_of_text|>`, cut into `seq_length` chunks (labels = inputs shifted by one); `iterate_batches` wraps it in a `DataLoader` |
 | `run_gpu.sh` | Slurm job: `sbatch run_gpu.sh <script.py> [args]` |
 | `push.sh`, `pull.sh` | copy files Mac ↔ HiPerGator |
 | `drgrpo_grader.py`, `vllm_utils.py`, `checkpoint.py`, `prompts/`, `prompts_safety/` | grader, vLLM server + weight sync, model loading, prompts — course starter code, unchanged |

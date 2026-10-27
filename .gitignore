@@ -22,3 +22,6 @@ checkpoints/
 
 # course test-suite kept locally for checking, not published
 tests/
+
+# SFT data (~200K examples, downloaded from Hugging Face; too large for git)
+data/sft/
