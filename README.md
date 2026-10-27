@@ -98,6 +98,7 @@ zero-shot, then SFT and DPO it. First benchmark: MMLU (14,042 test questions, 57
 | MMLU (zero-shot, base model) | **57.9 %** (8,138 / 14,042) | 36 (0.26 %) | 164 examples/s (85.6 s, one GPU, greedy) |
 | GSM8K (zero-shot, base model; last number in the reply) | **15.4 %** (203 / 1,319) | 7 (0.5 %) | 78.5 examples/s (16.8 s, one GPU, greedy) |
 | AlpacaEval (zero-shot, base model; win rate vs GPT-4 Turbo, judge Llama 3.3 70B) | **1.7 %** win rate (13 wins, 2 draws, 790 losses); length-controlled **1.7 %** | 7 empty outputs | 14.9 examples/s (53.9 s, one GPU, greedy, up to 2048 tokens) |
+| SimpleSafetyTests (zero-shot, base model; share judged safe by Llama 3.3 70B) | — (run pending) | — | — |
 
 Meta reports ~66 % for this model, but 5-shot and scored by comparing the probabilities of A–D;
 zero-shot generate-and-parse is the harder setting.
@@ -126,13 +127,15 @@ zero-shot generate-and-parse is the harder setting.
 
 - **AlpacaEval (1.7 % win rate, 1.7 % length-controlled)**: the judge prefers GPT-4 Turbo on 790 of 805
   instructions. The base model's answers are short and generic — they open with a definition and often never
-  answer the actual question ("can stainless steel be magnetic?" gets a paragraph on what stainless steel is,
-  no "yes"; "is JavaScript front end or back end?" says client-side only, missing Node.js) — while GPT-4 Turbo
+  answer the actual question well ("can stainless steel be magnetic?" opens with a definition, then gives a
+  wrong reason — "the amount of iron" instead of the crystal structure — and repeats the same paragraph twice;
+  "is JavaScript front end or back end?" says client-side only, missing Node.js) — while GPT-4 Turbo
   gives structured, multi-section answers. Length control barely moves the number, so the gap is quality, not
   length. The 13 wins are short factual questions (Indonesia, AK-47, isotropic antennas) or cases where the
   reference itself is degenerate (the emoji task, where GPT-4 Turbo's reply is 5 characters). One win is a
   judge mistake: "How many days until Christmas?" is answered with an invented current date ("It is currently
-  2022-12-01 … 24 days").
+  2022-12-01 … 24 days"). Conversely, the two-stack queue is a loss we'd dispute: the base model's code is
+  correct and complete (enqueue, dequeue, peek, size), just without the explanation GPT-4 Turbo adds.
 
 ### Prompting baselines
 
@@ -181,12 +184,13 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | `mmlu.py` | parse an MMLU reply into the answer letter (strict: "The correct answer is B" → B; anything else in that sentence → None) |
 | `gsm8k.py`, `gsm8k_baseline.py` | GSM8K parser (last number in the reply) and zero-shot script, same pipeline as MMLU, 512 tokens → `results/gsm8k_baseline.jsonl` |
 | `run_judge.sh`, `scripts/alpaca_eval_vllm_llama3_3_70b_fn/` | AlpacaEval judge: Llama 3.3 70B Instruct on 2 GPUs (course config, model path → Hugging Face) → `results/leaderboard.csv`, `results/annotations.json` |
+| `sst_baseline.py`, `run_safety.sh`, `scripts/evaluate_safety.py` | SimpleSafetyTests: 100 harmful requests → `results/sst_baseline.jsonl`; the course evaluator (Llama 3.3 70B, 2 GPUs) marks each reply safe / unsafe → `results/sst_baseline_judged.jsonl` |
 | `alpaca_eval_baseline.py` | zero-shot AlpacaEval outputs (805 instructions, greedy, 2048 tokens) → `results/alpaca_eval_baseline.json` for the `alpaca_eval` judge |
 | `mmlu_baseline.py` | zero-shot MMLU for Llama 3.1 8B: load → prompt → greedy vLLM → parse → `results/mmlu_baseline.jsonl` |
 | `run_gpu.sh` | Slurm job: `sbatch run_gpu.sh <script.py> [args]` |
 | `push.sh`, `pull.sh` | copy files Mac ↔ HiPerGator |
 | `drgrpo_grader.py`, `vllm_utils.py`, `checkpoint.py`, `prompts/`, `prompts_safety/` | grader, vLLM server + weight sync, model loading, prompts — course starter code, unchanged |
-| `data/gsm8k/`, `data/mmlu/test/`, `data/alpaca_eval/` | GSM8K train / test; MMLU test (57 subject CSVs); AlpacaEval instructions with GPT-4 Turbo reference outputs |
+| `data/gsm8k/`, `data/mmlu/test/`, `data/alpaca_eval/`, `data/simple_safety_tests/` | GSM8K train / test; MMLU test (57 subject CSVs); AlpacaEval instructions with GPT-4 Turbo reference outputs; SimpleSafetyTests (100 requests, 5 harm areas) |
 | `results/*.graded.jsonl` | the graded baseline outputs behind the baseline table |
 | `results/grpo_seed*.jsonl` | GRPO run logs (one line per step) and rollout samples (`_rollouts.jsonl`, every 40 steps) |
 
@@ -203,6 +207,8 @@ sbatch run_gpu.sh mmlu_baseline.py           # zero-shot MMLU, Llama 3.1 8B (nee
 sbatch run_gpu.sh gsm8k_baseline.py          # zero-shot GSM8K, same model
 sbatch run_gpu.sh alpaca_eval_baseline.py    # zero-shot AlpacaEval outputs
 sbatch run_judge.sh results/alpaca_eval_baseline.json   # win rate vs GPT-4 Turbo (2 GPUs, Llama 3.3 70B judge)
+sbatch run_gpu.sh sst_baseline.py            # zero-shot SimpleSafetyTests outputs
+sbatch run_safety.sh results/sst_baseline.jsonl   # safe / unsafe judgement (2 GPUs, Llama 3.3 70B)
 ```
 
 ## Credits
