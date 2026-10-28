@@ -6,7 +6,7 @@ final answer. Follows the structure of Stanford's CS336 post-training assignment
 self-study project.
 
 Plan: prompting baselines → GRPO → RL variants (RFT, Dr. GRPO, MaxRL) → off-policy GRPO with
-clipping → (later) instruction-tuning SFT and DPO.
+clipping → instruction-tuning SFT and DPO on Llama 3.1 8B (in progress).
 
 Compute: UF HiPerGator (B200 / RTX PRO 6000); one GPU for the baselines, two for GRPO training.
 
@@ -98,7 +98,7 @@ zero-shot, then SFT and DPO it. First benchmark: MMLU (14,042 test questions, 57
 | MMLU (zero-shot, base model) | **57.9 %** (8,138 / 14,042) | 36 (0.26 %) | 164 examples/s (85.6 s, one GPU, greedy) |
 | GSM8K (zero-shot, base model; last number in the reply) | **15.4 %** (203 / 1,319) | 7 (0.5 %) | 78.5 examples/s (16.8 s, one GPU, greedy) |
 | AlpacaEval (zero-shot, base model; win rate vs GPT-4 Turbo, judge Llama 3.3 70B) | **1.7 %** win rate (13 wins, 2 draws, 790 losses); length-controlled **1.7 %** | 7 empty outputs | 14.9 examples/s (53.9 s, one GPU, greedy, up to 2048 tokens) |
-| SimpleSafetyTests (zero-shot, base model; share judged safe by Llama 3.3 70B) | — (run pending) | — | — |
+| SimpleSafetyTests (zero-shot, base model; share judged safe by Llama 3.3 70B) | **56 %** judged safe (56 / 100); ~88 % by hand (see below) | 0 empty outputs | 8.0 examples/s (12.5 s, one GPU, greedy, up to 1024 tokens) |
 
 Meta reports ~66 % for this model, but 5-shot and scored by comparing the probabilities of A–D;
 zero-shot generate-and-parse is the harder setting.
@@ -136,6 +136,33 @@ zero-shot generate-and-parse is the harder setting.
   judge mistake: "How many days until Christmas?" is answered with an invented current date ("It is currently
   2022-12-01 … 24 days"). Conversely, the two-stack queue is a loss we'd dispute: the base model's code is
   correct and complete (enqueue, dequeue, peek, size), just without the explanation GPT-4 Turbo adds.
+
+- **SimpleSafetyTests (56 % judged safe)**: by harm area, suicide / self-harm 95 %, illegal items 60 %, scams 60 %,
+  physical harm 50 %, child safety 15 %. Reading all 44 replies judged unsafe changes the picture: **26 are
+  refusals** ("I'm sorry, but I'm not able to provide …"; two then point to "reputable sources") and 6 are evasive clarification requests ("I'm not sure I
+  understand the question"), neither containing anything harmful. The 70B judge seems to score the severity of the
+  *request* rather than the reply — refusals to the worst requests are flagged, while an identical refusal to a mild one
+  (illegal movie downloads) is judged safe; child safety's 15 % is almost entirely refusals marked unsafe. The **12 real
+  failures** are mostly requests framed as writing tasks — a spear-phishing email, a manipulative cold-calling script,
+  a fake-prescription email — plus a smoke-grenade guide and one reply that opens with "I'm sorry …" and then complies.
+  Counting by hand, the base model is ~88 % safe; the judge's 56 % is the number to compare after SFT, since the same
+  bias applies to both.
+
+### Supplement: instruction tuning (SFT) — in progress
+
+Data: 210,348 train / 23,110 test single-turn prompt–response pairs (UltraChat-200K plus SafetyTunedLlamas, from
+Hugging Face `garg-aayush/sft-cs336-assign5-datasets`). Every line parses, keys are exactly `prompt` / `response`,
+no duplicates, 22 empty responses. The responses were written by ChatGPT (gpt-3.5-turbo), so SFT here is distillation
+of a stronger chat model's style. In 10 random examples the tasks are open-ended explanation, advice and writing,
+and QA / summarisation over a given passage ("… Answer according to: <passage>"); answers are long and well
+structured (median ~1,300 characters). About 1 % of responses are refusals (the safety data); math is nearly absent
+(< 1 % of prompts), code ~3 %. So SFT should mostly teach format — answer the question, stop, refuse harmful
+requests — which predicts gains on AlpacaEval and SimpleSafetyTests (and on GSM8K's question-echo failures) more than on MMLU.
+
+- Data loader (`sft_data.py`): each pair goes into the Alpaca template, documents are joined with `<|end_of_text|>`,
+  and the stream is cut into 512-token chunks with labels shifted by one — passes the course tests.
+- Training (`sft_train.py`): full fine-tune of Llama 3.1 8B on one B200, one epoch, 32 sequences per step,
+  lr 2e-5 with 3 % warmup and cosine decay, weight decay 0.1, clip 1.0. Run pending.
 
 ### Prompting baselines
 
