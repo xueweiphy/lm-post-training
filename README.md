@@ -188,6 +188,7 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | `alpaca_eval_baseline.py` | zero-shot AlpacaEval outputs (805 instructions, greedy, 2048 tokens) → `results/alpaca_eval_baseline.json` for the `alpaca_eval` judge |
 | `mmlu_baseline.py` | zero-shot MMLU for Llama 3.1 8B: load → prompt → greedy vLLM → parse → `results/mmlu_baseline.jsonl` |
 | `sft_data.py` | SFT data loader: Alpaca-format each prompt/response, join with `<|end_of_text|>`, cut into `seq_length` chunks (labels = inputs shifted by one); `iterate_batches` wraps it in a `DataLoader` |
+| `sft_train.py` | SFT of Llama 3.1 8B (1 B200): AdamW, 32 × 512-token sequences per step (micro-batch 4 × 8 accumulation), cosine lr with 3% warmup, clip 1.0; val loss on 1,000 test examples every 200 steps → `results/sft_lr<lr>.jsonl`, model + tokenizer → `checkpoints/sft_lr<lr>/`; `python sft_train.py [lr] [train_file]` |
 | `run_gpu.sh` | Slurm job: `sbatch run_gpu.sh <script.py> [args]` |
 | `push.sh`, `pull.sh` | copy files Mac ↔ HiPerGator |
 | `drgrpo_grader.py`, `vllm_utils.py`, `checkpoint.py`, `prompts/`, `prompts_safety/` | grader, vLLM server + weight sync, model loading, prompts — course starter code, unchanged |
@@ -209,6 +210,7 @@ sbatch run_gpu.sh gsm8k_baseline.py          # zero-shot GSM8K, same model
 sbatch run_gpu.sh alpaca_eval_baseline.py    # zero-shot AlpacaEval outputs
 sbatch run_judge.sh results/alpaca_eval_baseline.json   # win rate vs GPT-4 Turbo (2 GPUs, Llama 3.3 70B judge)
 sbatch run_gpu.sh sst_baseline.py            # zero-shot SimpleSafetyTests outputs
+sbatch -p hpg-b200 --gres=gpu:b200:1 --time=06:00:00 run_gpu.sh sft_train.py   # SFT, 1 epoch
 sbatch run_safety.sh results/sst_baseline.jsonl   # safe / unsafe judgement (2 GPUs, Llama 3.3 70B)
 ```
 

@@ -10,6 +10,7 @@ logs/
 results/*.jsonl
 !results/*.graded.jsonl
 !results/grpo_*.jsonl
+!results/sft_*.jsonl
 inspect.txt
 wandb/
 
