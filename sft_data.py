@@ -7,8 +7,8 @@ PROMPT_DIR = os.path.join(os.path.dirname(__file__), "prompts_safety")
 class DataLoading(torch.utils.data.Dataset):
     """Packed SFT data: Alpaca-format every example, join with EOS, cut into seq_length chunks."""
 
-    def __init__(self, tokenizer, dataset_path, seq_length, shuffle):
-        examples = [json.loads(l) for l in open(dataset_path)]
+    def __init__(self, tokenizer, dataset_path, seq_length, shuffle, n_max=None):
+        examples = [json.loads(l) for l in open(dataset_path)][:n_max]   # n_max: first n examples only (e.g. a val slice)
         sft_template = open(os.path.join(PROMPT_DIR, "alpaca_sft.prompt")).read().rstrip("\n")   # fixture has no newline before EOS
         self.seq_length = seq_length
         if shuffle:
