@@ -148,7 +148,7 @@ zero-shot generate-and-parse is the harder setting.
   Counting by hand, the base model is ~88 % safe; the judge's 56 % is the number to compare after SFT, since the same
   bias applies to both.
 
-### Supplement: instruction tuning (SFT) — in progress
+### Supplement: instruction tuning (SFT)
 
 Data: 210,348 train / 23,110 test single-turn prompt–response pairs (UltraChat-200K plus SafetyTunedLlamas, from
 Hugging Face `garg-aayush/sft-cs336-assign5-datasets`). Every line parses, keys are exactly `prompt` / `response`,
@@ -161,8 +161,35 @@ requests — which predicts gains on AlpacaEval and SimpleSafetyTests (and on GS
 
 - Data loader (`sft_data.py`): each pair goes into the Alpaca template, documents are joined with `<|end_of_text|>`,
   and the stream is cut into 512-token chunks with labels shifted by one — passes the course tests.
-- Training (`sft_train.py`): full fine-tune of Llama 3.1 8B on one B200, one epoch, 32 sequences per step,
-  lr 2e-5 with 3 % warmup and cosine decay, weight decay 0.1, clip 1.0. Run pending.
+- Training (`sft_train.py`): see below. Evaluation of the SFT model on the four benchmarks (`*_sft.py`): pending.
+
+**Training setup.** All weights of Llama 3.1 8B base, one epoch over 215,248 packed 512-token chunks (110M tokens;
+loss on every token, prompts included), 32 sequences per optimizer step (micro-batch 4 × 8 accumulation) → 6,726 steps.
+AdamW, peak lr 2e-5, linear warmup over 3 % of steps then cosine decay to 0, weight decay 0.1, gradient clipping at 1.0.
+Weights, gradients and optimizer states in bfloat16, FlashAttention-2, loss in float32. One B200; peak memory 81.7 GB of 183 GB.
+Validation: the first 1,000 test examples (1,017 chunks), every 200 steps.
+
+| | val loss | perplexity |
+|---|---|---|
+| base model (step 0) | 1.767 | 5.9 |
+| after 200 steps (end of warmup) | 1.502 | 4.5 |
+| after 1 epoch (step 6,726) | **1.425** | 4.2 |
+
+![SFT learning curve](results/sft_lr2e-05.png)
+
+- **Most of the gain is immediate.** 78 % of the drop happens during warmup, after 3 % of the data; the remaining 6,500
+  steps add 0.08. That fits the reading of the data above: the model picks up the Alpaca layout and the ChatGPT answer style
+  almost at once, and the rest is slow refinement.
+- **No overfitting.** Every chunk is seen once, and the train loss (200-step mean ≈ 1.43) sits on the val loss throughout.
+- **Flat end.** Val loss is unchanged to the 4th decimal from step ~5,000, where the cosine schedule has taken the lr near 0.
+  A higher peak lr or a second epoch may still help. A candidate cause worth testing is bfloat16 rounding: a typical weight
+  (~0.02) has a bf16 spacing of ~8e-5, larger than an AdamW update of ≲ lr = 2e-5, so many small updates may round away —
+  fp32 master weights would show whether that matters.
+- **Why the floor is ~1.4, not lower.** The loss includes the user prompts, which no model can predict well, and 512-token
+  chunks cut many examples (median ~500 tokens), so tokens at the start of a chunk have lost their prompt.
+- **Clipping is active on every step**: the pre-clip gradient norm is ~2.5–3 throughout (spikes up to 21). With AdamW a
+  near-constant rescaling mostly cancels in the update, so it acts as a safety bound rather than changing the dynamics.
+- The train curve is noisy (std ≈ 0.27) because each logged point is a single micro-batch of 4 sequences.
 
 ### Prompting baselines
 
@@ -215,7 +242,7 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | `alpaca_eval_baseline.py` | zero-shot AlpacaEval outputs (805 instructions, greedy, 2048 tokens) → `results/alpaca_eval_baseline.json` for the `alpaca_eval` judge |
 | `mmlu_baseline.py` | zero-shot MMLU for Llama 3.1 8B: load → prompt → greedy vLLM → parse → `results/mmlu_baseline.jsonl` |
 | `sft_data.py` | SFT data loader: Alpaca-format each prompt/response, join with `<|end_of_text|>`, cut into `seq_length` chunks (labels = inputs shifted by one); `iterate_batches` wraps it in a `DataLoader` |
-| `sft_train.py` | SFT of Llama 3.1 8B (1 B200): AdamW, 32 × 512-token sequences per step (micro-batch 4 × 8 accumulation), cosine lr with 3% warmup, clip 1.0; val loss on 1,000 test examples every 200 steps → `results/sft_lr<lr>.jsonl`, model + tokenizer → `checkpoints/sft_lr<lr>/`; `python sft_train.py [lr] [train_file]` |
+| `sft_train.py`, `plot_sft.py` | SFT of Llama 3.1 8B (1 B200): AdamW, 32 × 512-token sequences per step (micro-batch 4 × 8 accumulation), cosine lr with 3% warmup, clip 1.0; val loss on 1,000 test examples every 200 steps → `results/sft_lr<lr>.jsonl`, model + tokenizer → `checkpoints/sft_lr<lr>/`; `python sft_train.py [lr] [train_file]`; `plot_sft.py` draws the learning curve → `results/sft_lr<lr>.png` |
 | `mmlu_sft.py`, `gsm8k_sft.py`, `alpaca_eval_sft.py`, `sst_sft.py` | the four evals on the SFT model (`[model_dir]`, default `checkpoints/sft_lr2e-05`): same data, parsers and generation settings as the baselines, but each task prompt goes into the Alpaca training template (ending `### Response:`) instead of the zero-shot system prompt; stop at EOS or a new `Below is an instruction` → `results/<bench>_sft_lr2e-05.jsonl` (AlpacaEval in its own folder so the judge's `annotations.json` does not overwrite the baseline's) |
 | `run_gpu.sh` | Slurm job: `sbatch run_gpu.sh <script.py> [args]` |
 | `push.sh`, `pull.sh` | copy files Mac ↔ HiPerGator |
