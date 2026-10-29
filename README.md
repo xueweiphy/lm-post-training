@@ -216,6 +216,7 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | `mmlu_baseline.py` | zero-shot MMLU for Llama 3.1 8B: load → prompt → greedy vLLM → parse → `results/mmlu_baseline.jsonl` |
 | `sft_data.py` | SFT data loader: Alpaca-format each prompt/response, join with `<|end_of_text|>`, cut into `seq_length` chunks (labels = inputs shifted by one); `iterate_batches` wraps it in a `DataLoader` |
 | `sft_train.py` | SFT of Llama 3.1 8B (1 B200): AdamW, 32 × 512-token sequences per step (micro-batch 4 × 8 accumulation), cosine lr with 3% warmup, clip 1.0; val loss on 1,000 test examples every 200 steps → `results/sft_lr<lr>.jsonl`, model + tokenizer → `checkpoints/sft_lr<lr>/`; `python sft_train.py [lr] [train_file]` |
+| `mmlu_sft.py`, `gsm8k_sft.py`, `alpaca_eval_sft.py`, `sst_sft.py` | the four evals on the SFT model (`[model_dir]`, default `checkpoints/sft_lr2e-05`): same data, parsers and generation settings as the baselines, but each task prompt goes into the Alpaca training template (ending `### Response:`) instead of the zero-shot system prompt; stop at EOS or a new `Below is an instruction` → `results/<bench>_sft_lr2e-05.jsonl` (AlpacaEval in its own folder so the judge's `annotations.json` does not overwrite the baseline's) |
 | `run_gpu.sh` | Slurm job: `sbatch run_gpu.sh <script.py> [args]` |
 | `push.sh`, `pull.sh` | copy files Mac ↔ HiPerGator |
 | `drgrpo_grader.py`, `vllm_utils.py`, `checkpoint.py`, `prompts/`, `prompts_safety/` | grader, vLLM server + weight sync, model loading, prompts — course starter code, unchanged |
@@ -238,6 +239,10 @@ sbatch run_gpu.sh alpaca_eval_baseline.py    # zero-shot AlpacaEval outputs
 sbatch run_judge.sh results/alpaca_eval_baseline.json   # win rate vs GPT-4 Turbo (2 GPUs, Llama 3.3 70B judge)
 sbatch run_gpu.sh sst_baseline.py            # zero-shot SimpleSafetyTests outputs
 sbatch -p hpg-b200 --gres=gpu:b200:1 --time=06:00:00 run_gpu.sh sft_train.py   # SFT, 1 epoch
+sbatch run_gpu.sh mmlu_sft.py; sbatch run_gpu.sh gsm8k_sft.py               # SFT evals (1 GPU each)
+sbatch run_gpu.sh alpaca_eval_sft.py; sbatch run_gpu.sh sst_sft.py
+sbatch run_judge.sh results/alpaca_eval_sft_lr2e-05/alpaca_eval_sft_lr2e-05.json
+sbatch run_safety.sh results/sst_sft_lr2e-05.jsonl
 sbatch run_safety.sh results/sst_baseline.jsonl   # safe / unsafe judgement (2 GPUs, Llama 3.3 70B)
 ```
 
