@@ -26,3 +26,6 @@ tests/
 
 # SFT data (~200K examples, downloaded from Hugging Face; too large for git)
 data/sft/
+
+# Anthropic HH preference data (~75 MB, course copy / Hugging Face Anthropic/hh-rlhf)
+data/hh/
