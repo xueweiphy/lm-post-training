@@ -15,9 +15,10 @@ def log_prob(model, ids):
     return logp[0, torch.arange(len(tgt)), tgt].sum()      # log pi(whole sequence)
 
 
-def dpo_loss(lm, lm_ref, tokenizer, beta, prompt, response_chosen, response_rejected):
-    seqw = sft_template.format(instruction=prompt, response=response_chosen)
-    seql = sft_template.format(instruction=prompt, response=response_rejected)
+def dpo_loss(lm, lm_ref, tokenizer, beta, prompt):
+    # prompt: one example from load_hh(), a dict with "instruction", "chosen", "rejected"
+    seqw = sft_template.format(instruction=prompt["instruction"], response=prompt["chosen"])
+    seql = sft_template.format(instruction=prompt["instruction"], response=prompt["rejected"])
     ids_w = torch.tensor([tokenizer.encode(seqw) + [tokenizer.eos_token_id]], device=lm.device)
     ids_l = torch.tensor([tokenizer.encode(seql) + [tokenizer.eos_token_id]], device=lm.device)
     logpw = log_prob(lm, ids_w)
