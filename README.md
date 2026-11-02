@@ -246,6 +246,7 @@ missing ability. The r1_zero row (≈0 %) is the starting point GRPO has to impr
 | `mmlu_sft.py`, `gsm8k_sft.py`, `alpaca_eval_sft.py`, `sst_sft.py` | the four evals on the SFT model (`[model_dir]`, default `checkpoints/sft_lr2e-05`): same data, parsers and generation settings as the baselines, but each task prompt goes into the Alpaca training template (ending `### Response:`) instead of the zero-shot system prompt; stop at EOS or a new `Below is an instruction` → `results/<bench>_sft_lr2e-05.jsonl` (AlpacaEval in its own folder so the judge's `annotations.json` does not overwrite the baseline's) |
 | `hh.py` | `load_hh()`: Anthropic HH preference data (4 training files in `data/hh/`, not in git) → 49,436 single-turn examples `{file, instruction, chosen, rejected}`; `python hh.py` prints 3 helpful + 3 harmless samples |
 | `dpo.py` | per-instance DPO loss `dpo_loss(lm, lm_ref, tokenizer, beta, ex)` for one `load_hh()` example: chosen / rejected each in the Alpaca template + EOS; log π of the whole sequence under the trained and the frozen reference model (prompt part cancels); `-logsigmoid(β·[(log π_w − log π_ref,w) − (log π_l − log π_ref,l)])` — passes the course test |
+| `dpo_train.py` | DPO from the SFT checkpoint on HH (2 GPUs: policy cuda:0, frozen reference cuda:1): one pair per loss call, 64-pair gradient accumulation, RMSprop lr 1e-6, β 0.1, clip 1.0; 200 held-out pairs for val loss and accuracy (implicit reward ranks chosen first) every 20 steps → `results/dpo_lr<lr>.jsonl`, model → `checkpoints/dpo_lr<lr>/`; `python dpo_train.py [lr] [n_train]` |
 | `run_gpu.sh` | Slurm job: `sbatch run_gpu.sh <script.py> [args]` |
 | `push.sh`, `pull.sh` | copy files Mac ↔ HiPerGator |
 | `drgrpo_grader.py`, `vllm_utils.py`, `checkpoint.py`, `prompts/`, `prompts_safety/` | grader, vLLM server + weight sync, model loading, prompts — course starter code, unchanged |
@@ -272,6 +273,7 @@ sbatch run_gpu.sh mmlu_sft.py; sbatch run_gpu.sh gsm8k_sft.py               # SF
 sbatch run_gpu.sh alpaca_eval_sft.py; sbatch run_gpu.sh sst_sft.py
 sbatch run_judge.sh results/alpaca_eval_sft_lr2e-05/alpaca_eval_sft_lr2e-05.json
 sbatch run_safety.sh results/sst_sft_lr2e-05.jsonl
+sbatch --gres=gpu:rtx_pro_6000:2 --time=12:00:00 run_gpu.sh dpo_train.py   # DPO (2 GPUs)
 sbatch run_safety.sh results/sst_baseline.jsonl   # safe / unsafe judgement (2 GPUs, Llama 3.3 70B)
 ```
 
