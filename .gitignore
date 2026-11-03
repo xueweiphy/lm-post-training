@@ -11,6 +11,7 @@ results/*.jsonl
 !results/*.graded.jsonl
 !results/grpo_*.jsonl
 !results/sft_*.jsonl
+!results/dpo_*.jsonl
 inspect.txt
 wandb/
 
